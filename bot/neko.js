@@ -43,7 +43,11 @@ client.on('ready', () => {
             },
                 {
                     name: "Users",
-                    value: client.users.size
+                    value: client.users.filter(g => !g.bot).size
+                },
+                {
+                     name: "Bots",
+                     value: client.users.filter(g => g.bot).size
                 }
             ],
             timestamp: new Date(),
