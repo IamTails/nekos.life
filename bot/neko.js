@@ -6,16 +6,26 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const moment = require('moment');
 const prefix = "~";
-const dblkey = "nope";
-const token = 'not';
-const owner = 'today';
-const dbotskey = 'boi'
+const dblkey = "";
+const token = '';
+const owner = '';
+const dbotskey = ''
 const clean = text => {
     if (typeof(text) === "string")
         return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
     else
         return text;
 };
+function getRandomColor() {
+
+    let letters = '0123456789';
+    let color = '';
+    for (let i = 0; i < 7; i++) {
+        color += letters[Math.floor(Math.random() * 10)];
+    }
+
+    return color;
+}
 
 client.on("error", (e) => console.warn(e));
 client.on("warn", (e) => console.warn(e));
@@ -35,7 +45,7 @@ client.on('ready', () => {
     client.user.setGame(`With Nekos \\o/`);
     client.channels.get("334471388289302539").send({
         embed: {
-            color: 8150701,
+            color: getRandomColor(),
             title: "I restarted",
             fields: [{
                 name: "Guilds",
@@ -46,14 +56,15 @@ client.on('ready', () => {
                     value: client.users.filter(g => !g.bot).size
                 },
                 {
-                     name: "Bots",
-                     value: client.users.filter(g => g.bot).size
+                    name: "Bots",
+                    value: client.users.filter(g => g.bot).size
                 }
             ],
             timestamp: new Date(),
         }
     });
     console.log(`Ready to serve on ${client.guilds.size} servers, for ${client.users.size} users.`);
+
 });
 
 client.on('message', message => {
