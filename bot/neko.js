@@ -8,8 +8,7 @@ const moment = require('moment');
 const prefix = "~";
 const dblkey = "";
 const token = '';
-const owner = '';
-const owner2 = '312238004653785088';
+const owners = ["326080439662149633", "312238004653785088"];
 const dbotskey = ''
 const clean = text => {
     if (typeof(text) === "string")
@@ -170,7 +169,7 @@ client.on("message", message => {
     const args = message.content.split(" ").slice(1);
 
     if (message.content.startsWith(prefix + "eval")) {
-        if(message.author.id !== owner || message.author.id !== owner2) return;
+        if(!owners.includes(message.author.id)) return;
         try {
             const code = args.join(" ");
             let evaled = eval(code);
