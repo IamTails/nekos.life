@@ -9,6 +9,7 @@ const prefix = "~";
 const dblkey = "";
 const token = '';
 const owner = '';
+const owner2 = '312238004653785088';
 const dbotskey = ''
 const clean = text => {
     if (typeof(text) === "string")
@@ -169,7 +170,7 @@ client.on("message", message => {
     const args = message.content.split(" ").slice(1);
 
     if (message.content.startsWith(prefix + "eval")) {
-        if(message.author.id !== owner) return;
+        if(message.author.id !== owner || message.author.id !== owner2) return;
         try {
             const code = args.join(" ");
             let evaled = eval(code);
