@@ -6,13 +6,13 @@ const snekfetch = require('snekfetch');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const moment = require('moment');
-// r = require('rethinkdb');
+const os = require('os');
 const dprefix = "~";
 const prefix = "~";
-const dblkey = "Owo";
-const token = 'Whats';
-const owners = ["326080439662149633", "312238004653785088","139800365393510400"];
-const dbotskey = 'This';
+const dblkey = "WEW";
+const token = 'ITs';
+const owners = ["326080439662149633", "312238004653785088", "139800365393510400"];
+const dbotskey = '3:44 am good fucking night';
 const clean = text => {
     if (typeof(text) === "string")
 
@@ -20,6 +20,8 @@ const clean = text => {
     else
         return text;
 };
+// r = require('rethinkdb');
+require('moment-duration-format');
 //vars
 let nyac = 0;
 let helpc = 0;
@@ -28,23 +30,28 @@ let statsc = 0;
 let nekoc = 0;
 let voters = "";
 let link = "No perms";
+let uptime = "";
 //funcs
 /*
-r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
-    if (err) throw err;
-    const connection = conn;
-});
-r.db('neko').tableCreate('prefixs').run(connection, function(err, result) {
-    if (err) throw err;
-    console.log(JSON.stringify(result, null, 2));
-});
-function getPrefix(guildID) {
-r.table('prefix').get(guildID).
-run(connection, function(err, result) {
-    if (err) return dprefix;
-    return result;
-})}
-*/
+ r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
+ if (err) throw err;
+ const connection = conn;
+ });
+ r.db('neko').tableCreate('prefixs').run(connection, function(err, result) {
+ if (err) throw err;
+ console.log(JSON.stringify(result, null, 2));
+ });
+ function getPrefix(guildID) {
+ r.table('prefix').get(guildID).
+ run(connection, function(err, result) {
+ if (err) return dprefix;
+ return result;
+ })}
+ */
+function getUptime() {
+    uptime = moment.duration(client.uptime).format('d[ days], h[ hours], m[ minutes, and ]s[ seconds]');
+    return uptime
+}
 function getRandomColor() {
 
     let letters = '0123456789';
@@ -71,11 +78,13 @@ function stats() {
     statsc += 1;
 }
 function getVotes() {
-snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
- .set('Authorization', dblkey)
- .then(rsp => {voters = rsp.body})
- .catch(e => console.warn('wew tf happened here ' + e ));
-return voters;
+    snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
+        .set('Authorization', dblkey)
+        .then(rsp => {
+            voters = rsp.body
+        })
+        .catch(e => console.warn('wew tf happened here ' + e));
+    return voters;
 }
 function getInvite(guild) {
     guild.defaultChannel.createInvite({
@@ -83,7 +92,10 @@ function getInvite(guild) {
     }).then(rsp => {
         link = rsp.url
     })
-        .catch(e => {link = "no perms"; console.warn('wew tf happened here ' + e)});
+        .catch(e => {
+            link = "no perms";
+            console.warn('wew tf happened here ' + e)
+        });
     return link;
 }
 //errors
@@ -105,7 +117,7 @@ client.on('ready', () => {
     client.user.setGame(`With Nekos \\o/`);
     //TODO
     //fucked up hacky thing to make votes not 0 on first ~stats use idefk
-    console.log('wew '+ getVotes().length); //this prints nothing but with out it ~stats is 0 ?????
+    console.log('wew ' + getVotes().length); //this prints nothing but with out it ~stats is 0 ?????
     client.channels.get("334471388289302539").send({
         embed: {
             color: getRandomColor(),
@@ -136,7 +148,7 @@ client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (message.content.startsWith(prefix + "nya")) {
         message.reply('Mew!!');
-       nya();
+        nya();
 
     }
 });
@@ -158,14 +170,14 @@ client.on('message', message => {
                     {
                         name: "**~**neko",
                         value: "Posts a random neko from [nekos.life](https://nekos.life) \\o/."
-                    },{
+                    }, {
                         name: "**~**lewd",
                         value: "Posts a random lewd neko from [nekos.life](https://nekos.life) o.o"
                     },
                     {
                         name: "**~**stats",
                         value: "Shows the stats ^^"
-                    },{
+                    }, {
                         name: "**~**invite",
                         value: "bot and support guild links."
                     }
@@ -201,7 +213,8 @@ client.on('message', message => {
                 }
             }));
 
-    }});
+    }
+});
 //lewd
 client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -265,6 +278,7 @@ client.on('message', message => {
 client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (message.content.startsWith(prefix + "stats")) {
+        stats();
         message.channel.send({
             embed: {
                 color: getRandomColor(),
@@ -284,36 +298,43 @@ client.on('message', message => {
                     {
                         name: "Bots",
                         value: client.users.filter(g => g.bot).size
+                    }, {
+                        name: "Uptime"
+                        , value: getUptime()
+                    }, {
+                        name: "Ping",
+                        value: client.ping.toFixed(0) + 'ms'
                     },{
-                        name: "ping",
-                    value: client.ping.toFixed(0)+'ms'
+                        name: "Ram used",
+                        value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB`
                     },
                     {
-                    name: "Times nya used since restart",
-                    value: nyac
-                },
-                    {
-                        name: "Times help used since restart",
-                        value: helpc
+                        name: "Version info",
+                        value: "**Node**: " + process.version + " **D.js**: "+ Discord.version
                     },
+                    {
+                        name: "Times nya used since restart",
+                        value: nyac
+                    },
+
                     {
                         name: "Times neko used since restart",
                         value: nekoc
-                    },   {
+                    }, {
                         name: "Times stats used since restart",
                         value: statsc
                     },
                     {
                         name: "Times lewd used since restart",
                         value: lewdc
-                    },{
+                    }, {
                         name: "Upvotes",
                         value: getVotes().length
                     },
                     {
-                        name: "Links" ,
-                        value:"[Upvote](https://discordbots.org/bot/334186716770598912)" + " | [GitHub](https://github.com/TomsUsername/nekos.life/tree/master/bot)"
-                        }
+                        name: "Links",
+                        value: "[Upvote](https://discordbots.org/bot/334186716770598912)" + " | [GitHub](https://github.com/TomsUsername/nekos.life/tree/master/bot)"
+                    }
                 ],
 
                 timestamp: new Date(),
@@ -323,14 +344,14 @@ client.on('message', message => {
             }
         })
     }
-    stats();
+
 });
 //eval
 client.on("message", message => {
     const args = message.content.split(" ").slice(1);
 
     if (message.content.startsWith(prefix + "eval")) {
-        if(!owners.includes(message.author.id)) return;
+        if (!owners.includes(message.author.id)) return;
         try {
             const code = args.join(" ");
             let evaled = eval(code);
@@ -340,16 +361,18 @@ client.on("message", message => {
 
             message.channel.send({
                 embed: {
-                color: getRandomColor(),
+                    color: getRandomColor(),
                     author: {
-                    name: "eval",
+                        name: "eval",
                         icon_url: client.user.avatarURL
-                },
-                fields: [
-                    {
-                        name: "Result",
-                        value: clean(evaled),
-                    }]}});
+                    },
+                    fields: [
+                        {
+                            name: "Result",
+                            value: clean(evaled),
+                        }]
+                }
+            });
         } catch (err) {
             message.channel.send({
                 embed: {
@@ -362,7 +385,9 @@ client.on("message", message => {
                         {
                             name: "Result",
                             value: `\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``,
-                        }]}});
+                        }]
+                }
+            });
         }
     }
 });
@@ -382,12 +407,13 @@ client.on('guildCreate', guild => {
 
 
     guild.defaultChannel.createInvite({
-        maxAge: 0}).then(inv => console.log(inv.url +" "+ inv.guild)).catch(console.log);
+        maxAge: 0
+    }).then(inv => console.log(inv.url + " " + inv.guild)).catch(console.log);
 
     client.channels.get("334471388289302539").send({
         embed: {
 
-    color: 8190976,
+            color: 8190976,
             title: "i joined a guild \\o/",
             thumbnail: {url: guild.iconURL},
             fields: [{
@@ -397,7 +423,7 @@ client.on('guildCreate', guild => {
                 {
                     name: "Owner",
                     value: guild.owner.displayName
-                },{
+                }, {
                     name: "Users",
                     value: guild.memberCount
                 },
@@ -449,13 +475,13 @@ client.on('guildDelete', guild => {
                 value: guild.name
             },
                 {
-                name: "Owner",
-                value: guild.owner.displayName
-            },
+                    name: "Owner",
+                    value: guild.owner.displayName
+                },
                 {
-                name: "Users",
-                value: guild.memberCount
-            },
+                    name: "Users",
+                    value: guild.memberCount
+                },
                 {
                     name: "Bots",
                     value: guild.members.filter(member => member.user.bot).size
