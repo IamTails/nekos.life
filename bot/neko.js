@@ -1,21 +1,50 @@
 /*
  Created by ℭrystaℒ on 7/10/2017.
  */
+//consts
 const snekfetch = require('snekfetch');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const moment = require('moment');
+// r = require('rethinkdb');
+const dprefix = "~";
 const prefix = "~";
-const dblkey = "";
-const token = '';
-const owners = ["326080439662149633", "312238004653785088"];
-const dbotskey = ''
+const dblkey = "Owo";
+const token = 'Whats';
+const owners = ["326080439662149633", "312238004653785088","139800365393510400"];
+const dbotskey = 'This';
 const clean = text => {
     if (typeof(text) === "string")
+
         return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
     else
         return text;
 };
+//vars
+let nyac = 0;
+let helpc = 0;
+let lewdc = 0;
+let statsc = 0;
+let nekoc = 0;
+let voters = "";
+let link = "No perms";
+//funcs
+/*
+r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
+    if (err) throw err;
+    const connection = conn;
+});
+r.db('neko').tableCreate('prefixs').run(connection, function(err, result) {
+    if (err) throw err;
+    console.log(JSON.stringify(result, null, 2));
+});
+function getPrefix(guildID) {
+r.table('prefix').get(guildID).
+run(connection, function(err, result) {
+    if (err) return dprefix;
+    return result;
+})}
+*/
 function getRandomColor() {
 
     let letters = '0123456789';
@@ -26,11 +55,43 @@ function getRandomColor() {
 
     return color;
 }
+function nya() {
+    nyac += 1;
+}
+function help() {
+    helpc += 1;
+}
+function lewd() {
+    lewdc += 1;
+}
+function neko() {
+    nekoc += 1;
+}
+function stats() {
+    statsc += 1;
+}
+function getVotes() {
+snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
+ .set('Authorization', dblkey)
+ .then(rsp => {voters = rsp.body})
+ .catch(e => console.warn('wew tf happened here ' + e ));
+return voters;
+}
+function getInvite(guild) {
+    guild.defaultChannel.createInvite({
+        maxAge: 0
+    }).then(rsp => {
+        link = rsp.url
+    })
+        .catch(e => {link = "no perms"; console.warn('wew tf happened here ' + e)});
+    return link;
+}
 
+//errors
 client.on("error", (e) => console.warn(e));
 client.on("warn", (e) => console.warn(e));
 /*client.on("debug", (e) => console.info(e));*/
-
+//ready
 client.on('ready', () => {
     snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
         .set('Authorization', dblkey)
@@ -66,17 +127,20 @@ client.on('ready', () => {
     console.log(`Ready to serve on ${client.guilds.size} servers, for ${client.users.size} users.`);
 
 });
-
+//Nya
 client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (message.content.startsWith(prefix + "nya")) {
         message.reply('Mew!!');
+       nya();
+
     }
 });
-
+//help
 client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (message.content.startsWith(prefix + "help")) {
+        help();
         message.channel.send({
             embed: {
                 color: 8150701,
@@ -106,11 +170,35 @@ client.on('message', message => {
             }
         })
     }
-});
 
+});
+//neko
+client.on('message', message => {
+
+    if (!message.content.startsWith(prefix) || message.author.bot) return;
+    if (message.content.startsWith(prefix + "neko")) {
+        neko();
+
+        snekfetch.get('https://nekos.life/api/neko')
+            .then(r => message.channel.send({
+                embed: {
+                    color: 8150701,
+                    author: {
+                        name: "Nekos \\o/",
+                        icon_url: client.user.avatarURL
+                    },
+                    image: {
+                        url: r.body.neko
+                    }
+                }
+            }));
+
+    }});
+//lewd
 client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (message.content.startsWith(prefix + "lewd")) {
+        lewd();
         if (message.channel.nsfw) {
             snekfetch.get('https://nekos.life/api/lewd/neko')
                 .then(r => message.channel.send({
@@ -139,8 +227,9 @@ client.on('message', message => {
             })
         }
     }
-});
 
+});
+//invite
 client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (message.content.startsWith(prefix + "invite")) {
@@ -164,7 +253,71 @@ client.on('message', message => {
         })
     }
 });
+//stats
+client.on('message', message => {
+    if (!message.content.startsWith(prefix) || message.author.bot) return;
+    if (message.content.startsWith(prefix + "stats")) {
+        message.channel.send({
+            embed: {
+                color: getRandomColor(),
+                author: {
+                    name: "Stats for " + client.user.username,
+                    icon_url: client.user.avatarURL
+                },
+                fields: [
+                    {
+                        name: "Guilds",
+                        value: client.guilds.size
+                    },
+                    {
+                        name: "Users",
+                        value: client.users.filter(g => !g.bot).size
+                    },
+                    {
+                        name: "Bots",
+                        value: client.users.filter(g => g.bot).size
+                    },{
+                        name: "ping",
+                    value: client.ping.toFixed(0)+'ms'
+                    },
+                    {
+                    name: "Times nya used since restart",
+                    value: nyac
+                },
+                    {
+                        name: "Times help used since restart",
+                        value: helpc
+                    },
+                    {
+                        name: "Times neko used since restart",
+                        value: nekoc
+                    },   {
+                        name: "Times stats used since restart",
+                        value: statsc
+                    },
+                    {
+                        name: "Times lewd used since restart",
+                        value: lewdc
+                    },{
+                        name: "Upvotes",
+                        value: getVotes().length
+                    },
+                    {
+                        name: "Links" ,
+                        value:"[Upvote](https://discordbots.org/bot/334186716770598912)" + " | [GitHub](https://github.com/TomsUsername/nekos.life/tree/master/bot)"
+                        }
+                ],
 
+                timestamp: new Date(),
+                footer: {
+                    text: "Stats requested by " + message.author.username
+                }
+            }
+        })
+    }
+    stats();
+});
+//eval
 client.on("message", message => {
     const args = message.content.split(" ").slice(1);
 
@@ -183,7 +336,7 @@ client.on("message", message => {
         }
     }
 });
-
+//guild logs
 client.on('guildCreate', guild => {
     snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
         .set('Authorization', dblkey)
@@ -224,7 +377,7 @@ client.on('guildCreate', guild => {
                 },
                 {
                     name: "invite",
-                    value: "link sent to console"
+                    value: getInvite(guild)
                 },
                 {
                     name: "Guild id",
@@ -244,7 +397,6 @@ client.on('guildCreate', guild => {
     }).catch(console.log);
     console.log(`joined ${guild.name}.`);
 });
-
 client.on('guildDelete', guild => {
     snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
         .set('Authorization', dblkey)
@@ -296,24 +448,5 @@ client.on('guildDelete', guild => {
     });
     console.log(`left ${guild.name}.`);
 });
-
-client.on('message', message => {
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
-    if (message.content.startsWith(prefix + "neko")) {
-
-        snekfetch.get('https://nekos.life/api/neko')
-            .then(r => message.channel.send({
-                embed: {
-                    color: 8150701,
-                    author: {
-                        name: "Nekos \\o/",
-                        icon_url: client.user.avatarURL
-                    },
-                    image: {
-                        url: r.body.neko
-                    }
-                }
-            }));
-    }});
-
+//login
 client.login(token);
