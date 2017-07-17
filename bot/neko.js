@@ -20,6 +20,70 @@ const clean = text => {
     else
         return text;
 };
+const express = require('express');
+const app = express();
+
+app.get('/', function (req, res) {
+    fields =[
+        {
+            name: "Guilds",
+            value: client.guilds.size
+        },
+        {
+            name: "Users",
+            value: client.users.filter(g => !g.bot).size
+        },
+        {
+            name: "Bots",
+            value: client.users.filter(g => g.bot).size
+        }, {
+            name: "Uptime"
+            , value: getUptime()
+        }, {
+            name: "Ping",
+            value: client.ping.toFixed(0) + 'ms'
+        },{
+            name: "Ram used",
+            value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB`
+        },
+        {
+            name: "Version info",
+            value: "**Node**: " + process.version + " **D.js**: "+ Discord.version
+        },
+        {
+            name: "Times nya used since restart",
+            value: nyac
+        },
+        {
+            name: "Times help used since restart",
+            value: helpc
+        },
+        {
+            name: "Times stats used since restart",
+            value: statsc
+        },
+        {
+            name: "Times neko used since restart",
+            value: nekoc
+        },
+        {
+            name: "Times lewd used since restart",
+            value: lewdc
+        }, {
+            name: "Upvotes",
+            value: getVotes().length
+        },
+        {
+            name: "Links",
+            value: "[Upvote](https://discordbots.org/bot/334186716770598912)" + " | [GitHub](https://github.com/TomsUsername/nekos.life/tree/master/bot)"
+        }
+    ];
+    res.send(fields)
+});
+
+app.listen(3000, function () {
+    console.log('something something port 3000!')
+});
 // r = require('rethinkdb');
 require('moment-duration-format');
 //vars
