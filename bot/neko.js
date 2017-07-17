@@ -86,7 +86,6 @@ function getInvite(guild) {
         .catch(e => {link = "no perms"; console.warn('wew tf happened here ' + e)});
     return link;
 }
-
 //errors
 client.on("error", (e) => console.warn(e));
 client.on("warn", (e) => console.warn(e));
@@ -104,6 +103,9 @@ client.on('ready', () => {
         .then(r => console.log('status : ' + r.status + ' for dbots guild count of ' + client.guilds.size))
         .catch(e => console.warn('wew tf happened here ' + e + ' for dbots post guild count of ' + client.guilds.size));
     client.user.setGame(`With Nekos \\o/`);
+    //TODO
+    //fucked up hacky thing to make votes not 0 on first ~stats use idefk
+    console.log('wew '+ getVotes().length); //this prints nothing but with out it ~stats is 0 ?????
     client.channels.get("334471388289302539").send({
         embed: {
             color: getRandomColor(),
@@ -123,10 +125,12 @@ client.on('ready', () => {
             ],
             timestamp: new Date(),
         }
+
     });
     console.log(`Ready to serve on ${client.guilds.size} servers, for ${client.users.size} users.`);
 
 });
+
 //Nya
 client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -143,7 +147,7 @@ client.on('message', message => {
         help();
         message.channel.send({
             embed: {
-                color: 8150701,
+                color: getRandomColor(),
                 author: {
                     name: "Command Help for " + client.user.username,
                     icon_url: client.user.avatarURL
@@ -157,7 +161,11 @@ client.on('message', message => {
                     },{
                         name: "**~**lewd",
                         value: "Posts a random lewd neko from [nekos.life](https://nekos.life) o.o"
-                    }, {
+                    },
+                    {
+                        name: "**~**stats",
+                        value: "Shows the stats ^^"
+                    },{
                         name: "**~**invite",
                         value: "bot and support guild links."
                     }
@@ -182,7 +190,7 @@ client.on('message', message => {
         snekfetch.get('https://nekos.life/api/neko')
             .then(r => message.channel.send({
                 embed: {
-                    color: 8150701,
+                    color: getRandomColor(),
                     author: {
                         name: "Nekos \\o/",
                         icon_url: client.user.avatarURL
@@ -203,7 +211,7 @@ client.on('message', message => {
             snekfetch.get('https://nekos.life/api/lewd/neko')
                 .then(r => message.channel.send({
                     embed: {
-                        color: 8150701,
+                        color: getRandomColor(),
                         author: {
                             name: "Lewd Nekos >.<",
                             icon_url: client.user.avatarURL
@@ -217,7 +225,7 @@ client.on('message', message => {
         } else {
             message.channel.send({
                 embed: {
-                    color: 8150701,
+                    color: getRandomColor(),
                     author: {
                         name: client.user.username,
                         icon_url: client.user.avatarURL
@@ -235,7 +243,7 @@ client.on('message', message => {
     if (message.content.startsWith(prefix + "invite")) {
         message.channel.send({
             embed: {
-                color: 8150701,
+                color: getRandomColor(),
                 fields: [{
                     name: "Support Guild",
                     value: "[Support Guild click here](https://discord.gg/Edw4FhF)"
