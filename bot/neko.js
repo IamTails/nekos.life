@@ -316,13 +316,17 @@ client.on('message', message => {
                         name: "Times nya used since restart",
                         value: nyac
                     },
-
+                    {
+                        name: "Times help used since restart",
+                        value: helpc
+                    },
+                    {
+                        name: "Times stats used since restart",
+                        value: statsc
+                    },
                     {
                         name: "Times neko used since restart",
                         value: nekoc
-                    }, {
-                        name: "Times stats used since restart",
-                        value: statsc
                     },
                     {
                         name: "Times lewd used since restart",
