@@ -9,10 +9,10 @@ const moment = require('moment');
 const os = require('os');
 const dprefix = "~";
 const prefix = "~";
-const dblkey = "WEW";
-const token = 'ITs';
+const dblkey = "";
+const token = '';
 const owners = ["326080439662149633", "312238004653785088", "139800365393510400"];
-const dbotskey = '3:44 am good fucking night';
+const dbotskey = '';
 const clean = text => {
     if (typeof(text) === "string")
 
@@ -20,8 +20,8 @@ const clean = text => {
     else
         return text;
 };
-const express = require('express');
-const app = express();
+/*const express = require('express');
+const app = express();*/
 // r = require('rethinkdb');
 require('moment-duration-format');
 //vars
@@ -33,6 +33,7 @@ let nekoc = 0;
 let voters = "";
 let link = "No perms";
 let uptime = "";
+let wump = "";
 //funcs
 /*
  r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
@@ -99,6 +100,14 @@ function getInvite(guild) {
             console.warn('wew tf happened here ' + e)
         });
     return link;
+}
+function getHb(result) {
+    snekfetch.post(`http://feed-the-wump.us/documents`)
+        .send(result)
+        .then(hb => { wump = "https://feed-the-wump.us/"+hb.body.key})
+        .catch(e => {wump = "some fucking error";
+        console.warn('wew tf happened here ' + e )});
+    return wump
 }
 //errors
 client.on("error", (e) => console.warn(e));
@@ -339,8 +348,8 @@ client.on('message', message => {
                     },
                     {
                         name: "Links",
-                        value: "[WebSite](https://nekos.life) | [Upvote](https://discordbots.org/bot/334186716770598912) | [GitHub](https://github.com/TomsUsername/nekos.life/tree/master/bot)" +
-                        " | [DBL](https://discordbots.org/bot/334186716770598912) | [Dbots](https://bots.discord.pw/bots/334186716770598912)"
+                        value: "[WebSite](https://nekos.life) | [Upvote](https://discordbots.org/bot/334186716770598912) | [GitHub](https://github.com/TomsUsername/nekos.life/tree/master/bot) " +
+                        "| [DBL](https://discordbots.org/bot/334186716770598912) | [Dbots](https://bots.discord.pw/bots/334186716770598912)"
                     }
                 ],
 
@@ -377,9 +386,12 @@ client.on("message", message => {
                         {
                             name: "Result",
                             value: clean(evaled),
+                        }, {
+                            name: "Wumpus",
+                            value: getHb(clean(evaled)),
                         }]
                 }
-            });
+            }).catch(e => console.warn('wew tf happened here ' + e ));
         } catch (err) {
             message.channel.send({
                 embed: {
@@ -440,7 +452,7 @@ client.on('guildCreate', guild => {
                 },
                 {
                     name: "invite",
-                    value: getInvite(guild).catch(e => console.warn('wew tf happened here ' + e ))
+                    value: getInvite(guild)
                 },
                 {
                     name: "Guild id",
@@ -513,6 +525,7 @@ client.on('guildDelete', guild => {
 });
 //login
 client.login(token).catch(e => console.warn('wew tf happened here ' + e ));
+/*
 app.set('title', 'Neko stats');
 app.get('/', function (req, res) {
     fields =[
@@ -574,3 +587,4 @@ app.get('/', function (req, res) {
 app.listen(3000, function () {
     console.log('something something port 3000!')
 });
+*/
