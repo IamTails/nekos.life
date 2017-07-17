@@ -22,68 +22,6 @@ const clean = text => {
 };
 const express = require('express');
 const app = express();
-
-app.get('/', function (req, res) {
-    fields =[
-        {
-            name: "Guilds",
-            value: client.guilds.size
-        },
-        {
-            name: "Users",
-            value: client.users.filter(g => !g.bot).size
-        },
-        {
-            name: "Bots",
-            value: client.users.filter(g => g.bot).size
-        }, {
-            name: "Uptime"
-            , value: getUptime()
-        }, {
-            name: "Ping",
-            value: client.ping.toFixed(0) + 'ms'
-        },{
-            name: "Ram used",
-            value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB`
-        },
-        {
-            name: "Version info",
-            value: "**Node**: " + process.version + " **D.js**: "+ Discord.version
-        },
-        {
-            name: "Times nya used since restart",
-            value: nyac
-        },
-        {
-            name: "Times help used since restart",
-            value: helpc
-        },
-        {
-            name: "Times stats used since restart",
-            value: statsc
-        },
-        {
-            name: "Times neko used since restart",
-            value: nekoc
-        },
-        {
-            name: "Times lewd used since restart",
-            value: lewdc
-        }, {
-            name: "Upvotes",
-            value: getVotes().length
-        },
-        {
-            name: "Links",
-            value: "[Upvote](https://discordbots.org/bot/334186716770598912)" + " | [GitHub](https://github.com/TomsUsername/nekos.life/tree/master/bot)"
-        }
-    ];
-    res.send(fields)
-});
-
-app.listen(3000, function () {
-    console.log('something something port 3000!')
-});
 // r = require('rethinkdb');
 require('moment-duration-format');
 //vars
@@ -178,7 +116,7 @@ client.on('ready', () => {
         .send({server_count: client.guilds.size})
         .then(r => console.log('status : ' + r.status + ' for dbots guild count of ' + client.guilds.size))
         .catch(e => console.warn('wew tf happened here ' + e + ' for dbots post guild count of ' + client.guilds.size));
-    client.user.setGame(`With Nekos \\o/`);
+    client.user.setGame(`With Nekos \\o/`).catch(e => console.warn('wew tf happened here ' + e ));
     //TODO
     //fucked up hacky thing to make votes not 0 on first ~stats use idefk
     console.log('wew ' + getVotes().length); //this prints nothing but with out it ~stats is 0 ?????
@@ -202,7 +140,7 @@ client.on('ready', () => {
             timestamp: new Date(),
         }
 
-    });
+    }).catch(e => console.warn('wew tf happened here ' + e ));
     console.log(`Ready to serve on ${client.guilds.size} servers, for ${client.users.size} users.`);
 
 });
@@ -211,7 +149,7 @@ client.on('ready', () => {
 client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (message.content.startsWith(prefix + "nya")) {
-        message.reply('Mew!!');
+        message.reply('Mew!!').catch(e => console.warn('wew tf happened here ' + e ));
         nya();
 
     }
@@ -252,7 +190,7 @@ client.on('message', message => {
                     text: "Help requested by " + message.author.username
                 }
             }
-        })
+        }).catch(e => console.warn('wew tf happened here ' + e ))
     }
 
 });
@@ -275,7 +213,7 @@ client.on('message', message => {
                         url: r.body.neko
                     }
                 }
-            }));
+            }).catch(e => console.warn('wew tf happened here ' + e )));
 
     }
 });
@@ -297,7 +235,7 @@ client.on('message', message => {
                             url: r.body.neko
                         }
                     }
-                }));
+                }).catch(e => console.warn('wew tf happened here ' + e )));
 
         } else {
             message.channel.send({
@@ -309,7 +247,7 @@ client.on('message', message => {
                     },
                     description: "o.O lewd nekos are shy they can only be found in discord NSFW channels. mew!"
                 }
-            })
+            }).catch(e => console.warn('wew tf happened here ' + e ))
         }
     }
 
@@ -335,7 +273,7 @@ client.on('message', message => {
                     text: "Links requested by " + message.author.username
                 }
             }
-        })
+        }).catch(e => console.warn('wew tf happened here ' + e ));
     }
 });
 //stats
@@ -401,7 +339,8 @@ client.on('message', message => {
                     },
                     {
                         name: "Links",
-                        value: "[Upvote](https://discordbots.org/bot/334186716770598912)" + " | [GitHub](https://github.com/TomsUsername/nekos.life/tree/master/bot)"
+                        value: "[WebSite](https://nekos.life) | [Upvote](https://discordbots.org/bot/334186716770598912) | [GitHub](https://github.com/TomsUsername/nekos.life/tree/master/bot)" +
+                        " | [DBL](https://discordbots.org/bot/334186716770598912) | [Dbots](https://bots.discord.pw/bots/334186716770598912)"
                     }
                 ],
 
@@ -410,7 +349,7 @@ client.on('message', message => {
                     text: "Stats requested by " + message.author.username
                 }
             }
-        })
+        }).catch(e => console.warn('wew tf happened here ' + e ));
     }
 
 });
@@ -501,7 +440,7 @@ client.on('guildCreate', guild => {
                 },
                 {
                     name: "invite",
-                    value: getInvite(guild)
+                    value: getInvite(guild).catch(e => console.warn('wew tf happened here ' + e ))
                 },
                 {
                     name: "Guild id",
@@ -573,4 +512,65 @@ client.on('guildDelete', guild => {
     console.log(`left ${guild.name}.`);
 });
 //login
-client.login(token);
+client.login(token).catch(e => console.warn('wew tf happened here ' + e ));
+app.set('title', 'Neko stats');
+app.get('/', function (req, res) {
+    fields =[
+        {
+            name: "Guilds",
+            value: client.guilds.size
+        },
+        {
+            name: "Users",
+            value: client.users.filter(g => !g.bot).size
+        },
+        {
+            name: "Bots",
+            value: client.users.filter(g => g.bot).size
+        }, {
+            name: "Uptime"
+            , value: getUptime()
+        }, {
+            name: "Ping",
+            value: client.ping.toFixed(0) + 'ms'
+        },{
+            name: "Ram used",
+            value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB`
+        },
+        {
+            name: "Version info",
+            value: "**Node**: " + process.version + " **D.js**: "+ Discord.version
+        },
+        {
+            name: "Times nya used since restart",
+            value: nyac
+        },
+        {
+            name: "Times help used since restart",
+            value: helpc
+        },
+        {
+            name: "Times stats used since restart",
+            value: statsc
+        },
+        {
+            name: "Times neko used since restart",
+            value: nekoc
+        },
+        {
+            name: "Times lewd used since restart",
+            value: lewdc
+        }, {
+            name: "Upvotes",
+            value: getVotes().length
+        },
+        {
+            name: "Links",
+            value: "[Upvote](https://discordbots.org/bot/334186716770598912)" + " | [GitHub](https://github.com/TomsUsername/nekos.life/tree/master/bot)"
+        }
+    ];
+    res.json(fields)
+});
+app.listen(3000, function () {
+    console.log('something something port 3000!')
+});
