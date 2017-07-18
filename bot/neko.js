@@ -1,7 +1,7 @@
 /*
  Created by ℭrystaℒ on 7/10/2017.
  */
-//consts
+
 const snekfetch = require('snekfetch');
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -24,7 +24,8 @@ const clean = text => {
 const app = express();*/
 // r = require('rethinkdb');
 require('moment-duration-format');
-//vars
+client.login(token).catch(e => console.warn('wew tf happened here ' + e ));
+
 let nyac = 0;
 let helpc = 0;
 let lewdc = 0;
@@ -34,7 +35,6 @@ let voters = "";
 let link = "No perms";
 let uptime = "";
 let wump = "";
-//funcs
 /*
  r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
  if (err) throw err;
@@ -109,7 +109,6 @@ function getHb(result) {
         console.warn('wew tf happened here ' + e )});
     return wump
 }
-//errors
 client.on("error", (e) => console.warn(e));
 client.on("warn", (e) => console.warn(e));
 /*client.on("debug", (e) => console.info(e));*/
@@ -153,18 +152,16 @@ client.on('ready', () => {
     console.log(`Ready to serve on ${client.guilds.size} servers, for ${client.users.size} users.`);
 
 });
-
-//Nya
-client.on('message', message => {
+client.on('message', message =>  {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (message.content.startsWith(prefix + "nya")) {
         message.reply('Mew!!').catch(e => console.warn('wew tf happened here ' + e ));
         nya();
 
     }
-});
+else
 //help
-client.on('message', message => {
+
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (message.content.startsWith(prefix + "help")) {
         help();
@@ -191,6 +188,9 @@ client.on('message', message => {
                     }, {
                         name: "**~**invite",
                         value: "bot and support guild links."
+                    },{
+                        name: "Times help used since restart",
+                        value: helpc,inline: true
                     }
                 ],
 
@@ -202,9 +202,7 @@ client.on('message', message => {
         }).catch(e => console.warn('wew tf happened here ' + e ))
     }
 
-});
-//neko
-client.on('message', message => {
+else
 
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (message.content.startsWith(prefix + "neko")) {
@@ -225,9 +223,9 @@ client.on('message', message => {
             }).catch(e => console.warn('wew tf happened here ' + e )));
 
     }
-});
+else
 //lewd
-client.on('message', message => {
+
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (message.content.startsWith(prefix + "lewd")) {
         lewd();
@@ -260,9 +258,8 @@ client.on('message', message => {
         }
     }
 
-});
-//invite
-client.on('message', message => {
+else
+
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (message.content.startsWith(prefix + "invite")) {
         message.channel.send({
@@ -284,9 +281,8 @@ client.on('message', message => {
             }
         }).catch(e => console.warn('wew tf happened here ' + e ));
     }
-});
-//stats
-client.on('message', message => {
+else
+
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (message.content.startsWith(prefix + "stats")) {
         stats();
@@ -301,51 +297,55 @@ client.on('message', message => {
                     {
                         name: "Guilds",
                         value: client.guilds.size
-                    },
+                            , inline: true},
                     {
                         name: "Users",
-                        value: client.users.filter(g => !g.bot).size
+                        value: client.users.filter(g => !g.bot).size, inline: true
                     },
                     {
                         name: "Bots",
-                        value: client.users.filter(g => g.bot).size
-                    }, {
-                        name: "Uptime"
-                        , value: getUptime()
-                    }, {
-                        name: "Ping",
-                        value: client.ping.toFixed(0) + 'ms'
+                        value: client.users.filter(g => g.bot).size,inline: true
                     },{
+                        name: "Ping",
+                        value: client.ping.toFixed(0) + 'ms', inline: true
+                    },
+                    {
+                        name: "Uptime"
+                        , value: getUptime(),inline: true
+                    },{
+                        name: "Upvotes",
+                        value: getVotes().length,inline: true
+                    },
+                    {
                         name: "Ram used",
-                        value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB`
+                        value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB`, inline: true
                     },
                     {
                         name: "Version info",
-                        value: "**Node**: " + process.version + " **D.js**: "+ Discord.version
+                        value: "**Node**: " + process.version + " **D.js**: "+ Discord.version, inline: true
+
+                    }, {
+                        name: "Bringing you Nekos since"
+                        , value: moment(client.user.createdAt).format('LLLL'),inline: true
                     },
                     {
                         name: "Times nya used since restart",
-                        value: nyac
+                        value: nyac,inline: true
                     },
-                    {
-                        name: "Times help used since restart",
-                        value: helpc
-                    },
+
                     {
                         name: "Times stats used since restart",
-                        value: statsc
+                        value: statsc,inline: true
                     },
                     {
                         name: "Times neko used since restart",
-                        value: nekoc
+                        value: nekoc,inline: true
                     },
                     {
                         name: "Times lewd used since restart",
-                        value: lewdc
-                    }, {
-                        name: "Upvotes",
-                        value: getVotes().length
+                        value: lewdc,inline: true
                     },
+
                     {
                         name: "Links",
                         value: "[WebSite](https://nekos.life) | [Upvote](https://discordbots.org/bot/334186716770598912) | [GitHub](https://github.com/TomsUsername/nekos.life/tree/master/bot) " +
@@ -361,13 +361,11 @@ client.on('message', message => {
         }).catch(e => console.warn('wew tf happened here ' + e ));
     }
 
-});
-//eval
-client.on("message", message => {
-    const args = message.content.split(" ").slice(1);
+else
 
     if (message.content.startsWith(prefix + "eval")) {
         if (!owners.includes(message.author.id)) return;
+        const args = message.content.split(" ").slice(1);
         try {
             const code = args.join(" ");
             let evaled = eval(code);
@@ -410,7 +408,6 @@ client.on("message", message => {
         }
     }
 });
-//guild logs
 client.on('guildCreate', guild => {
     snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
         .set('Authorization', dblkey)
@@ -523,8 +520,7 @@ client.on('guildDelete', guild => {
     });
     console.log(`left ${guild.name}.`);
 });
-//login
-client.login(token).catch(e => console.warn('wew tf happened here ' + e ));
+
 /*
 app.set('title', 'Neko stats');
 app.get('/', function (req, res) {
