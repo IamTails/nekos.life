@@ -8,6 +8,9 @@ exports.run = (client) => {
     const dblkey = config.dblkey;
     const dbotskey = config.dbotskey;
     const moment = require('moment');
+    const fs = require('fs')
+    const path = require('path');
+    const prefixes = path.join('./prefixes.json');
 
     function getRandomColor() {
 
@@ -19,6 +22,11 @@ exports.run = (client) => {
 
         return color;
     }
+    
+    const prefix JSON.parse(fs.readFileSync(prefixes, 'utf8'));
+    client.guilds.forEach(g => {
+        if (!prefix[g.id]) prefix[g.id] = {"prefix": config.prefix};
+    });
 
     snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats1`)
         .set('Authorization', dblkey)
