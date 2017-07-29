@@ -64,7 +64,7 @@ exports.run = (client, guild) => {
                 ],
                 timestamp: new Date(),
             }
-        })).catch(client.channels.get("334471388289302539").send({
+        })).catch(err => { client.channels.get("334471388289302539").send({
         embed: {
 
             color: 8190976,
@@ -104,7 +104,7 @@ exports.run = (client, guild) => {
             ],
             timestamp: new Date(),
         }
-    }));
+    })});
 
     console.log(`joined ${guild.name}.`);
 };
