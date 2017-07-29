@@ -23,7 +23,7 @@ exports.run = (client) => {
         return color;
     }
     
-    const prefix JSON.parse(fs.readFileSync(prefixes, 'utf8'));
+    const prefix = JSON.parse(fs.readFileSync(prefixes, 'utf8'));
     client.guilds.forEach(g => {
         if (!prefix[g.id]) prefix[g.id] = {"prefix": config.prefix};
     });
