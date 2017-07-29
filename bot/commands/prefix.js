@@ -15,7 +15,9 @@ exports.run = (client, message, args) => {
       } else {
         prefix[message.guild.id].prefix = param;
         fs.writeFileSync(prefixes, JSON.stringify(data, null, 2))
-        msg.reply('wew set my prefix to ${param}.`)
+        msg.reply(`wew set my prefix to ${param}.`)
       }
+    } else {
+    
     }
 };
