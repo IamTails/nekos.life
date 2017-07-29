@@ -7,6 +7,11 @@ exports.run = (client, guild) => {
     const config = require("../config.json");
     const dblkey = config.dblkey;
     const dbotskey = config.dbotskey;
+    const path = require('path');
+    const prefixes = path.join('.../prefixes.json');
+    const prefix = JSON.parse(fs.readFileSync(prefixes, 'utf8'))
+    
+    delete prefix(guild.id);
     snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
         .set('Authorization', dblkey)
         .send({server_count: client.guilds.size})
