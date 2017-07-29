@@ -5,6 +5,8 @@ exports.run = (client, guild) => {
     const moment = require('moment');
     const snekfetch = require('snekfetch');
     const config = require("../config.json");
+    const path = require('path');
+    const prefixes = path.join('./prefixes.json');
     const dblkey = config.dblkey;
     const dbotskey = config.dbotskey;
     snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
@@ -107,4 +109,7 @@ exports.run = (client, guild) => {
     })});
 
     console.log(`joined ${guild.name}.`);
+    
+    const prefix = JSON.parse(fs.readFileSync(prefixes, 'utf8'))
+    prefix.prefix = config.prefix
 };
