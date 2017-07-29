@@ -110,6 +110,7 @@ exports.run = (client, guild) => {
 
     console.log(`joined ${guild.name}.`);
     
-    const prefix = JSON.parse(fs.readFileSync(prefixes, 'utf8'))
-    prefix.prefix = config.prefix
+    const prefix = JSON.parse(fs.readFileSync(prefixes, 'utf8'));
+    prefix.prefix = config.prefix;
+    fs.writeFileSync(prefixes, JSON.stringify(data, null, 2))
 };
