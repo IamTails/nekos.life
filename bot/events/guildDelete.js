@@ -7,8 +7,9 @@ exports.run = (client, guild) => {
     const config = require("../config.json");
     const dblkey = config.dblkey;
     const dbotskey = config.dbotskey;
-    const path = require('path');
-    const prefixes = path.join('.../prefixes.json');
+    const fs = require("fs");
+    const path = require("path");
+    const prefixes = path.join("../prefixes.json");
     const prefix = JSON.parse(fs.readFileSync(prefixes, 'utf8'))
     
     delete prefix(guild.id);
