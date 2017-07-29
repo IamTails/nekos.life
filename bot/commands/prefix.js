@@ -10,8 +10,8 @@ exports.run = (client, message, args) => {
         return color;
     }
   const config = require("../config.json");
-    const path = require('path');
-    const prefixes = path.join('../prefixes.json')
+    const path = require("path");
+    const prefixes = path.join("../prefixes.json")
     const prefix = JSON.parse(fs.readFileSync(prefixes, 'utf8'));
     const param = args.slice(1).join(' ');
     const fs = require('fs');
