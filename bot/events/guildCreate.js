@@ -3,8 +3,6 @@
  */
 exports.run = (client, guild) => {
     const moment = require('moment');
-    client.prefixes[guild.id].prefix = client.prefix;
-    client.pdb(client.prefixes);
     client.snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
         .set('Authorization', client.config.dblkey)
         .send({server_count: client.guilds.size})
@@ -62,47 +60,49 @@ exports.run = (client, guild) => {
                 ],
                 timestamp: new Date(),
             }
-        })).catch(err => { client.channels.get("334471388289302539").send({
-        embed: {
+        })).catch(err => {
+        client.channels.get("334471388289302539").send({
+            embed: {
 
-            color: 8190976,
-            title: "i joined a guild \\o/",
-            thumbnail: {url: guild.iconURL},
-            fields: [{
-                name: "Guild",
-                value: guild.name
-            },
-                {
-                    name: "Owner",
-                    value: guild.owner.displayName
-                }, {
-                    name: "Users",
-                    value: guild.memberCount
+                color: 8190976,
+                title: "i joined a guild \\o/",
+                thumbnail: {url: guild.iconURL},
+                fields: [{
+                    name: "Guild",
+                    value: guild.name
                 },
-                {
-                    name: "Bots",
-                    value: guild.members.filter(member => member.user.bot).size
-                },
-                {
-                    name: "invite",
-                    value: "no perms"
-                },
-                {
-                    name: "Guild id",
-                    value: guild.id
-                },
-                {
-                    name: "Created At",
-                    value: moment(guild.createdAt).format('LLLL')
-                },
-                {
-                    name: "Total guilds",
-                    value: client.guilds.size
-                }
-            ],
-            timestamp: new Date(),
-        }
-    })});
+                    {
+                        name: "Owner",
+                        value: guild.owner.displayName
+                    }, {
+                        name: "Users",
+                        value: guild.memberCount
+                    },
+                    {
+                        name: "Bots",
+                        value: guild.members.filter(member => member.user.bot).size
+                    },
+                    {
+                        name: "invite",
+                        value: "no perms"
+                    },
+                    {
+                        name: "Guild id",
+                        value: guild.id
+                    },
+                    {
+                        name: "Created At",
+                        value: moment(guild.createdAt).format('LLLL')
+                    },
+                    {
+                        name: "Total guilds",
+                        value: client.guilds.size
+                    }
+                ],
+                timestamp: new Date(),
+            }
+        })
+    });
 
     console.log(`joined ${guild.name}.`);
 };

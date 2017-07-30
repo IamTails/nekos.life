@@ -29,33 +29,45 @@ exports.run = (client, message, args) => {
                                 value: "https://feed-the-wump.us/" + hb.body.key
                             }]
                     }
-                }).catch(e => console.warn('wew tf happened here ' + e));
-
+                }).catch(err => {
+                    client.snekfetch.post(`http://feed-the-wump.us/documents`)
+                        .send(client.clean(evaled))
+                        .then(hb => {
+                            message.channel.send({
+                                embed: {
+                                    color: client.getRandomColor(),
+                                    author: {
+                                        name: "eval",
+                                        icon_url: client.user.avatarURL
+                                    },
+                                    fields: [
+                                        {
+                                            name: "wumpus",
+                                            value: "https://feed-the-wump.us/" + hb.body.key
+                                        }]
+                                }
+                            })
+                        });
+                })
             })
-            .catch(e => {
-                console.warn('wew tf happened here ' + e);
-                return "some fucking error";
-
-
-            });
-
-
     } catch (err) {
-        message.channel.send({
-            embed: {
-                color: client.getRandomColor(),
-                author: {
-                    name: "eval",
-                    icon_url: client.user.avatarURL
-                },
-                fields: [
-                    {
-                        name: "Result",
-                        value: `\`ERROR\` \`\`\`xl\n${client.clean(err)}\n\`\`\``,
-                    }]
-            }
-        });
+        client.snekfetch.post(`http://feed-the-wump.us/documents`)
+            .send(client.clean(err))
+            .then(hb => {
+                message.channel.send({
+                    embed: {
+                        color: client.getRandomColor(),
+                        author: {
+                            name: "eval",
+                            icon_url: client.user.avatarURL
+                        },
+                        fields: [{
+                            name: "wumpus",
+                            value: "https://feed-the-wump.us/" + hb.body.key
+                        }]
+                    }
+                })
+            })
     }
 };
-
 

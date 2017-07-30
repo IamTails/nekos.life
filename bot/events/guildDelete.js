@@ -2,8 +2,7 @@
  * Created by Tom on 7/29/2017.
  */
 exports.run = (client, guild) => {
-    const moment = require('moment');    
-    delete client.prefixes[guild.id];
+    const moment = require('moment');
     client.snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
         .set('Authorization', client.config.dblkey)
         .send({server_count: client.guilds.size})
