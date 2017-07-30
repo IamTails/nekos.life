@@ -16,6 +16,11 @@ module.exports = (client) => {
 
     client.db = (x) => fs.writeFile("./stats.json", JSON.stringify(x), (err) => {if (err) console.error(err)
     });
+    
+    client.prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
+
+    client.pdb = (x) => fs.writeFile("./prefixes.json", JSON.stringify(x), (err) => {if (err) console.error(err)
+    });
 
     client.getRandomColor = () => {
 
@@ -65,3 +70,5 @@ module.exports = (client) => {
         console.error("Uncaught Promise Error: ", err);
     });
 };
+
+
