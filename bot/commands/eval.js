@@ -2,29 +2,8 @@
  * Created by Tom on 7/29/2017.
  */
 exports.run = (client, message, args) => {
-    const config = require("../config.json");
-    const owners = config.owners;
-    const snekfetch = require('snekfetch');
-    const clean = text => {
-        if (typeof(text) === "string")
 
-            return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-        else
-            return text;
-    };
-
-    function getRandomColor() {
-
-        let letters = '0123456789';
-        let color = '';
-        for (let i = 0; i < 7; i++) {
-            color += letters[Math.floor(Math.random() * 10)];
-        }
-
-        return color;
-    }
-
-    if (!owners.includes(message.author.id)) return;
+    if (!client.owners.includes(message.author.id)) return;
     try {
         const code = args.join(" ");
         let evaled = eval(code);
@@ -32,12 +11,12 @@ exports.run = (client, message, args) => {
         if (typeof evaled !== "string")
             evaled = require("util").inspect(evaled);
 
-        snekfetch.post(`http://feed-the-wump.us/documents`)
-            .send(clean(evaled))
+        client.snekfetch.post(`http://feed-the-wump.us/documents`)
+            .send(client.clean(evaled))
             .then(hb => {
                 message.channel.send({
                     embed: {
-                        color: getRandomColor(),
+                        color: client.getRandomColor(),
                         author: {
                             name: "eval",
                             icon_url: client.user.avatarURL
@@ -45,7 +24,7 @@ exports.run = (client, message, args) => {
                         fields: [
                             {
                                 name: "Result",
-                                value: clean(evaled),
+                                value: client.clean(evaled),
                             }, {
                                 name: "wumpus",
                                 value: "https://feed-the-wump.us/" + hb.body.key
@@ -65,7 +44,7 @@ exports.run = (client, message, args) => {
     } catch (err) {
         message.channel.send({
             embed: {
-                color: getRandomColor(),
+                color: client.getRandomColor(),
                 author: {
                     name: "eval",
                     icon_url: client.user.avatarURL
@@ -73,7 +52,7 @@ exports.run = (client, message, args) => {
                 fields: [
                     {
                         name: "Result",
-                        value: `\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``,
+                        value: `\`ERROR\` \`\`\`xl\n${client.clean(err)}\n\`\`\``,
                     }]
             }
         });

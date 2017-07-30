@@ -3,17 +3,13 @@
  */
 exports.run = (client, guild) => {
     const moment = require('moment');
-    const snekfetch = require('snekfetch');
-    const config = require("../config.json");
-    const dblkey = config.dblkey;
-    const dbotskey = config.dbotskey;
-    snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
-        .set('Authorization', dblkey)
+    client.snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
+        .set('Authorization', client.config.dblkey)
         .send({server_count: client.guilds.size})
         .then(r => console.log(r.status + ' for dbl guild count of ' + client.guilds.size))
         .catch(e => console.warn('wew tf happened here ' + e + ' for dbl post guild count of ' + client.guilds.size));
-    snekfetch.post(`https://bots.discord.pw/api/bots/334186716770598912/stats`)
-        .set('Authorization', dbotskey)
+    client.snekfetch.post(`https://bots.discord.pw/api/bots/334186716770598912/stats`)
+        .set('Authorization', client.config.dbotskey)
         .send({server_count: client.guilds.size})
         .then(r => console.log('status : ' + r.status + ' for dbots guild count of ' + client.guilds.size))
         .catch(e => console.warn('wew tf happened here ' + e + ' for dbots post guild count of ' + client.guilds.size));
