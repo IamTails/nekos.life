@@ -2,6 +2,7 @@ exports.run = (client, message, args) => {
     const param = args.slice(1).join(' ');
   
     if (args[0] === ' set') {
+      if (!client.owners.includes(message.author.id) || message.member.hasPermission('ADMINISTRATOR')) return msg.reply('huh, wut u doing? u need perms wew');
       if (!prefix[message.guild.id]) prefix = {'prefix', config.prefix};
       if (param === 'default') {
         client.prefixes[message.guild.id].prefix = client.prefix;
