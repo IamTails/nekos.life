@@ -3,11 +3,8 @@
  */
 exports.run = (client, guild) => {
     const moment = require('moment');
-    const path = require("path");
-    const prefixPath = path.join(__dirname, "prefixes.json");
-    const gprefix = JSON.parse(fs.readFileSync(prefixPath));
     
-    gprefix[guild.id].prefix = client.prefix;
+    client.prefixes[guild.id].prefix = client.prefix;
     client.pdb(client.prefixes);
     client.snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
         .set('Authorization', client.config.dblkey)
