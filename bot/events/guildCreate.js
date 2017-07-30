@@ -3,20 +3,19 @@
  */
 exports.run = (client, guild) => {
     const moment = require('moment');
-    const snekfetch = require('snekfetch');
-    const config = require("../config.json");
-    const fs = require("fs");
     const path = require("path");
-    const prefixes = path.join("../prefixes.json");
-    const dblkey = config.dblkey;
-    const dbotskey = config.dbotskey;
-    snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
-        .set('Authorization', dblkey)
+    const prefixPath = path.join(__dirname, "prefixes.json");
+    const gprefix = JSON.parse(fs.readFileSync(prefixPath));
+    
+    gprefix[guild.id].prefix = client.prefix;
+    client.pdb(client.prefixes);
+    client.snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
+        .set('Authorization', client.config.dblkey)
         .send({server_count: client.guilds.size})
         .then(r => console.log(r.status + ' for dbl guild count of ' + client.guilds.size))
         .catch(e => console.warn('wew tf happened here ' + e + ' for dbl post guild count of ' + client.guilds.size));
-    snekfetch.post(`https://bots.discord.pw/api/bots/334186716770598912/stats`)
-        .set('Authorization', dbotskey)
+    client.snekfetch.post(`https://bots.discord.pw/api/bots/334186716770598912/stats`)
+        .set('Authorization', client.config.dbotskey)
         .send({server_count: client.guilds.size})
         .then(r => console.log('status : ' + r.status + ' for dbots guild count of ' + client.guilds.size))
         .catch(e => console.warn('wew tf happened here ' + e + ' for dbots post guild count of ' + client.guilds.size));
@@ -110,8 +109,4 @@ exports.run = (client, guild) => {
     })});
 
     console.log(`joined ${guild.name}.`);
-    
-    const prefix = JSON.parse(fs.readFileSync(prefixes, 'utf8'));
-    prefix.prefix = config.prefix;
-    fs.writeFileSync(prefixes, JSON.stringify(data, null, 2))
 };
