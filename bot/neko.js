@@ -3,9 +3,6 @@
  */
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const fs = require("fs");
-const path = require("path");
-const prefixPath = path.join(__dirname, "prefixes.json");
 require("./functions/functions.js")(client);
 fs.readdir("./events/", (err, files) => {
     console.log(`Adding ${files.length} events.`);
@@ -17,12 +14,11 @@ fs.readdir("./events/", (err, files) => {
     });
 });
 client.on("message", async (message) => {
-    const gprefix = JSON.parse(fs.readFileSync(prefixPath, 'utf8'));
     if (message.author.bot) return;
-    if(message.content.indexOf(gprefix[message.guild.id].prefix) !== 0) return;
+    if(message.content.indexOf(client.prefixes[message.guild.id].prefix) !== 0) return;
 
     // This is the best way to define args. Trust me.
-    const args = message.content.slice(gprefix[message.guild.id].prefix.length).trim().split(/ +/g);
+    const args = message.content.slice(client.prefixes[message.guild.id].prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
 
     // The list of if/else is replaced with those simple 2 lines:
