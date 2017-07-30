@@ -10,8 +10,8 @@ exports.run = (client, message, args) => {
         if (typeof evaled !== "string")
             evaled = require("util").inspect(evaled);
 
-        snekfetch.post(`http://feed-the-wump.us/documents`)
-            .send(clean(evaled))
+        client.snekfetch.post(`http://feed-the-wump.us/documents`)
+            .send(client.clean(evaled))
             .then(hb => {
                 message.channel.send({
                     embed: {
@@ -23,7 +23,7 @@ exports.run = (client, message, args) => {
                         fields: [
                             {
                                 name: "Result",
-                                value: clean(evaled),
+                                value: client.clean(evaled),
                             }, {
                                 name: "wumpus",
                                 value: "https://feed-the-wump.us/" + hb.body.key
@@ -51,7 +51,7 @@ exports.run = (client, message, args) => {
                 fields: [
                     {
                         name: "Result",
-                        value: `\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``,
+                        value: `\`ERROR\` \`\`\`xl\n${client.clean(err)}\n\`\`\``,
                     }]
             }
         });

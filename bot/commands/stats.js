@@ -1,36 +1,18 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = (client, message, args) => {
-    function getRandomColor() {
-
-        let letters = '0123456789';
-        let color = '';
-        for (let i = 0; i < 7; i++) {
-            color += letters[Math.floor(Math.random() * 10)];
-        }
-
-        return color;
-    }
-
-    const fs = require("fs");
-    const snekfetch = require('snekfetch');
-    const config = require("../config.json");
+exports.run = (client, message) => {
     const moment = require('moment');
-    const dblkey = config.dblkey;
     const Discord = require('discord.js');
     require('moment-duration-format');
-    let stats = JSON.parse(fs.readFileSync("./stats.json", "utf8"));
-    stats.stats++;
-    fs.writeFile("./stats.json", JSON.stringify(stats), (err) => {
-        if (err) console.error(err)
-    });
-    snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
-        .set('Authorization', dblkey)
+    client.stats.stats++;
+    client.db(client.stats);
+    client.snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
+        .set('Authorization', client.config.dblkey)
         .then(rsp => {
             message.channel.send({
                 embed: {
-                    color: getRandomColor(),
+                    color: client.getRandomColor(),
                     author: {
                         name: "Stats for " + client.user.username,
                         icon_url: client.user.avatarURL
@@ -76,20 +58,20 @@ exports.run = (client, message, args) => {
                         },
                         {
                             name: "Times nya used",
-                            value: stats.nya, inline: true
+                            value: client.stats.nya, inline: true
                         },
 
                         {
                             name: "Times stats used",
-                            value: stats.stats, inline: true
+                            value: client.stats.stats, inline: true
                         },
                         {
                             name: "Times neko used",
-                            value: stats.neko, inline: true
+                            value: client.stats.neko, inline: true
                         },
                         {
                             name: "Times lewd used",
-                            value: stats.lewd, inline: true
+                            value: client.stats.lewd, inline: true
                         },
 
                         {

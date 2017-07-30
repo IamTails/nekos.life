@@ -1,32 +1,15 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = (client, message, args) => {
-    const snekfetch = require('snekfetch');
-
-    function getRandomColor() {
-
-        let letters = '0123456789';
-        let color = '';
-        for (let i = 0; i < 7; i++) {
-            color += letters[Math.floor(Math.random() * 10)];
-        }
-
-        return color;
-    }
-
-    const fs = require("fs");
-    let stats = JSON.parse(fs.readFileSync("./stats.json", "utf8"));
-    stats.lewd++;
-    fs.writeFile("./stats.json", JSON.stringify(stats), (err) => {
-        if (err) console.error(err)
-    });
+exports.run = (client, message) => {
+    client.stats.lewd++;
+    client.db(client.stats);
 
     if (message.channel.nsfw) {
-        snekfetch.get('https://nekos.life/api/lewd/neko')
+        client.snekfetch.get('https://nekos.life/api/lewd/neko')
             .then(r => message.channel.send({
                 embed: {
-                    color: getRandomColor(),
+                    color: client.getRandomColor(),
                     author: {
                         name: "Lewd Nekos >.<",
                         icon_url: client.user.avatarURL

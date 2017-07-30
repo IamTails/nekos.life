@@ -3,6 +3,8 @@
  */
 const Discord = require('discord.js');
 const client = new Discord.Client();
+const fs = require("fs");
+
 require("./functions/functions.js")(client);
 fs.readdir("./events/", (err, files) => {
     console.log(`Adding ${files.length} events.`);
@@ -15,10 +17,17 @@ fs.readdir("./events/", (err, files) => {
 });
 client.on("message", async (message) => {
     if (message.author.bot) return;
+
     if(message.content.indexOf(client.prefixes[message.guild.id].prefix) !== 0) return;
 
     // This is the best way to define args. Trust me.
     const args = message.content.slice(client.prefixes[message.guild.id].prefix.length).trim().split(/ +/g);
+
+    if(message.content.indexOf(client.prefix) !== 0) return;
+
+    // This is the best way to define args. Trust me.
+    const args = message.content.slice(client.prefix.length).trim().split(/ +/g);
+
     const command = args.shift().toLowerCase();
 
     // The list of if/else is replaced with those simple 2 lines:
@@ -36,4 +45,8 @@ process.on('uncaughtException', err => {
 });
 process.on("unhandledRejection", err => {
     console.error("Uncaught Promise Error: ", err);
+
 });
+
+});
+

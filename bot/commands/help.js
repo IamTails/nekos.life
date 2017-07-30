@@ -1,27 +1,12 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = (client, message, args) => {
-    function getRandomColor() {
-
-        let letters = '0123456789';
-        let color = '';
-        for (let i = 0; i < 7; i++) {
-            color += letters[Math.floor(Math.random() * 10)];
-        }
-
-        return color;
-    }
-
-    const fs = require("fs");
-    let stats = JSON.parse(fs.readFileSync("./stats.json", "utf8"));
-    stats.help++;
-    fs.writeFile("./stats.json", JSON.stringify(stats), (err) => {
-        if (err) console.error(err)
-    });
+exports.run = (client, message) => {
+    client.stats.help++;
+    client.db(client.stats);
     message.channel.send({
         embed: {
-            color: getRandomColor(),
+            color: client.getRandomColor(),
             author: {
                 name: "Command Help for " + client.user.username,
                 icon_url: client.user.avatarURL
@@ -44,7 +29,7 @@ exports.run = (client, message, args) => {
                     value: "bot and support guild links."
                 }, {
                     name: "Times help used since",
-                    value: stats.help, inline: true
+                    value: client.stats.help, inline: true
                 }
             ],
 

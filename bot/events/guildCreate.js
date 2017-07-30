@@ -3,7 +3,6 @@
  */
 exports.run = (client, guild) => {
     const moment = require('moment');
-    
     client.prefixes[guild.id].prefix = client.prefix;
     client.pdb(client.prefixes);
     client.snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
