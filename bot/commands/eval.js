@@ -2,29 +2,7 @@
  * Created by Tom on 7/29/2017.
  */
 exports.run = (client, message, args) => {
-    const config = require("../config.json");
-    const owners = config.owners;
-    const snekfetch = require('snekfetch');
-    const clean = text => {
-        if (typeof(text) === "string")
-
-            return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-        else
-            return text;
-    };
-
-    function getRandomColor() {
-
-        let letters = '0123456789';
-        let color = '';
-        for (let i = 0; i < 7; i++) {
-            color += letters[Math.floor(Math.random() * 10)];
-        }
-
-        return color;
-    }
-
-    if (!owners.includes(message.author.id)) return;
+    if (!client.owners.includes(message.author.id)) return;
     try {
         const code = args.join(" ");
         let evaled = eval(code);
@@ -37,7 +15,7 @@ exports.run = (client, message, args) => {
             .then(hb => {
                 message.channel.send({
                     embed: {
-                        color: getRandomColor(),
+                        color: client.getRandomColor(),
                         author: {
                             name: "eval",
                             icon_url: client.user.avatarURL
@@ -65,7 +43,7 @@ exports.run = (client, message, args) => {
     } catch (err) {
         message.channel.send({
             embed: {
-                color: getRandomColor(),
+                color: client.getRandomColor(),
                 author: {
                     name: "eval",
                     icon_url: client.user.avatarURL
