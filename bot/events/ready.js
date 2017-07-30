@@ -4,12 +4,10 @@
 exports.run = (client) => {
     const Discord = require('discord.js');
     const moment = require('moment');
-    const path = require("path");
-    const prefixPath = path.join(__dirname, "prefixes.json");
-    const gprefix = JSON.parse(fs.readFileSync(prefixPath));
     
     client.guilds.forEach(g => {
-        if (!prefix[g.id]) prefix[g.id] = {"prefix": client.prefix};
+        if (!client.prefixes[g.id]) client.prefixes[g.id] = {"prefix": client.prefix};
+        client.pdb(client.prefixes)
     });
 
     client.snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
