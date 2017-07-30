@@ -17,7 +17,7 @@ fs.readdir("./events/", (err, files) => {
     });
 });
 client.on("message", async (message) => {
-    const gprefix = JSON.parse(fs.readFileSync(prefixPath));
+    const gprefix = JSON.parse(fs.readFileSync(prefixPath, 'utf8'));
     if (message.author.bot) return;
     if(message.content.indexOf(gprefix[message.guild.id].prefix) !== 0) return;
 
