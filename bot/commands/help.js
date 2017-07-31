@@ -29,8 +29,10 @@ exports.run = (client, message) => {
                 },{
                     name: "**~**kiss",
                     value: "Give someone a kiss O.O"
-                },
-                {
+                }, {
+                    name: "**~**why",
+                    value: "Asks why"
+                }, {
                     name: "**~**stats",
                     value: "Shows the stats ^^"
                 }, {
