@@ -49,7 +49,7 @@ exports.run = (client, message) => {
                         },
                         {
                             name: "Version info",
-                            value: "**Node**: " + process.version + " **D.js**: " + Discord.version + " **Neko**: " + "1.7.0",
+                            value: "**Node**: " + process.version + " **D.js**: " + Discord.version + " **Neko**: " + client.config.nekover,
                             inline: true
 
                         }, {
@@ -72,6 +72,15 @@ exports.run = (client, message) => {
                         {
                             name: "Times lewd used",
                             value: client.stats.lewd, inline: true
+                        },{
+                            name: "Times kiss used",
+                            value: client.stats.kiss, inline: true
+                        },{
+                            name: "Times hug used",
+                            value: client.stats.hug, inline: true
+                        },{
+                            name: "Times pat used",
+                            value: client.stats.pat, inline: true
                         },
 
                         {
