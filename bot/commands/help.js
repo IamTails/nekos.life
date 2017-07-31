@@ -20,6 +20,15 @@ exports.run = (client, message) => {
                 }, {
                     name: "**~**lewd",
                     value: "Posts a random lewd neko from [nekos.life](https://nekos.life) o.o"
+                },{
+                    name: "**~**pat",
+                    value: "Give someone a pat O.o"
+                },{
+                    name: "**~**hug",
+                    value: "Give someone a hug o.O"
+                },{
+                    name: "**~**kiss",
+                    value: "Give someone a kiss O.O"
                 },
                 {
                     name: "**~**stats",

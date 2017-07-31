@@ -23,7 +23,7 @@ exports.run = (client, message) => {
     } else {
         message.channel.send({
             embed: {
-                color: getRandomColor(),
+                color: client.getRandomColor(),
                 author: {
                     name: client.user.username,
                     icon_url: client.user.avatarURL

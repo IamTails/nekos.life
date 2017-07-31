@@ -11,7 +11,7 @@ exports.run = async (client, message) => {
         let commandFile = require(`../commands/${command}.js`);
         commandFile.run(client, message, args);
     } catch (err) {
-        console.error(err);
+        console.error(" there was a err probly no command found we just going to log this to keep the console clear k");
     }
 
 };
