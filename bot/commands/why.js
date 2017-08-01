@@ -8,10 +8,11 @@ exports.run = (client, message) => {
                 author: {
                     name: "Why? \\o/",
                     icon_url: client.user.avatarURL
-                },
-                image: {
-                    url: r.body.why
-                }
+                },fields: [
+                    {
+                        name: message.author.username + "Asks ",
+                        value: r.body.why
+                    }]
             }
         }).catch(e => console.warn('wew tf happened here ' + e)));
 
