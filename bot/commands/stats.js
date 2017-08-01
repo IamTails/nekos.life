@@ -84,6 +84,9 @@ exports.run = (client, message) => {
                         }, {
                             name: "Times why used",
                             value: client.stats.why, inline: true
+                        }, {
+                            name: "Times lizard used",
+                            value: client.stats.lizard, inline: true
                         },
 
                         {

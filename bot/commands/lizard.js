@@ -13,7 +13,7 @@ exports.run = (client, message) => {
             embed: {
                 color: client.getRandomColor(),
                 author: {
-                    name: "Lizards \\o/",
+                    name: "Lizard \\o/",
                     icon_url: client.user.avatarURL
                 },
                 image: {

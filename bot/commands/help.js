@@ -33,6 +33,9 @@ exports.run = (client, message) => {
                     name: "**~**why",
                     value: "Asks why"
                 }, {
+                    name: "**~**lizard",
+                    value: "Posts a random lizard from [nekos.life](https://nekos.life) \\o/."
+                }, {
                     name: "**~**stats",
                     value: "Shows the stats ^^"
                 }, {
