@@ -1,6 +1,10 @@
 const fs = require("fs");
+const r = require('rethinkdb');
 
 module.exports = (client) => {
+
+
+    client.connection = null;
 
     client.snekfetch = require('snekfetch');
 
@@ -56,6 +60,12 @@ module.exports = (client) => {
             .replace(client.config.token, "wew No");
         return text;
     };
+
+    r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
+        if (err) throw err;
+        client.connection = conn;
+    });
+
     process.on('uncaughtException', err => {
         let errorMsg = err.stack.replace(new RegExp(`${__dirname}\/`, 'g'), './');
         console.error("Uncaught Exception: ", errorMsg);
