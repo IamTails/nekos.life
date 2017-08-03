@@ -2,8 +2,10 @@
  * Created by Tom on 7/30/2017.
  */
 exports.run = async (client, message) => {
+
     if (message.author.bot) return;
     if (message.channel.type !== "text") return message.reply("you can only play with me in a Guild, nya~");
+    if (await client.nekoChannel(message.guild.id).catch() !== null && await client.nekoChannel(message.guild.id) === message.channel.id) { }//todo catch a neko stuff
     if (await client.getGuild(message.guild.id) === null)
         return client.r.db("neko").table('guilds').insert({"id": message.guild.id,"prefix":client.prefix,"nekochannel":null},{conflict: "replace"}).run(client.connection, function(err, result) {
             if (err) throw err;

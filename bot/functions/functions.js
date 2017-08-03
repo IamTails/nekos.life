@@ -3,6 +3,7 @@ const fs = require("fs");
 
 module.exports = (client) => {
 
+
     client.r = require('rethinkdb');
 
     client.connection = null;
@@ -26,6 +27,11 @@ module.exports = (client) => {
         return infos.prefix
    };
 
+    client.nekoChannel = async (id) => {
+        let infos = await client.getGuild(id);
+        if (infos !== null) {return infos.nekochannel}
+
+    };
 
     client.getGuild = (id) => client.r.db('neko').table('guilds').get(id).
     run(client.connection, function(err, result) {
