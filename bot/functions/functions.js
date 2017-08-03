@@ -93,7 +93,8 @@ module.exports = (client) => {
             .replace(/`/g, "`" + String.fromCharCode(8203))
             .replace(/@/g, "@" + String.fromCharCode(8203))
             .replace(client.token, "wew No")
-            .replace(client.config.token, "wew No");
+            .replace(client.config.token, "wew No")
+            .replace('9 + 10', 'dont even, 19');
         return text;
     };
 
