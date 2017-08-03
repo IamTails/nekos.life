@@ -1,9 +1,9 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = (client, message, args) => {
-    console.log(args);
+exports.run = async (client, message, args) => {
     message.reply('Mew!!').catch(e => console.warn('wew tf happened here ' + e));
-    client.stats.nya++;
-    client.db(client.stats);
+    let stats = await client.getStats();
+    stats.nya++;
+    client.saveStats(stats);
 };

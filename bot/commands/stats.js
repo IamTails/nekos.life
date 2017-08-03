@@ -1,13 +1,14 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = (client, message) => {
+exports.run = async(client, message) => {
     const moment = require('moment');
     const Discord = require('discord.js');
     require('moment-duration-format');
-    client.stats.stats++;
-    client.db(client.stats);
-    client.snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
+    let stats = await client.getStats();
+    stats.stats++;
+    client.saveStats(stats);
+    await client.snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
         .set('Authorization', client.config.dblkey)
         .then(rsp => {
             message.channel.send({
@@ -58,36 +59,36 @@ exports.run = (client, message) => {
                         },
                         {
                             name: "Times nya used",
-                            value: client.stats.nya, inline: true
+                            value: stats.nya, inline: true
                         },
 
                         {
                             name: "Times stats used",
-                            value: client.stats.stats, inline: true
+                            value: stats.stats, inline: true
                         },
                         {
                             name: "Times neko used",
-                            value: client.stats.neko, inline: true
+                            value: stats.neko, inline: true
                         },
                         {
                             name: "Times lewd used",
-                            value: client.stats.lewd, inline: true
+                            value: stats.lewd, inline: true
                         },{
                             name: "Times kiss used",
-                            value: client.stats.kiss, inline: true
+                            value: stats.kiss, inline: true
                         },{
                             name: "Times hug used",
-                            value: client.stats.hug, inline: true
+                            value: stats.hug, inline: true
                         },{
                             name: "Times pat used",
-                            value: client.stats.pat, inline: true
+                            value: stats.pat, inline: true
                         }, {
                             name: "Times why used",
-                            value: client.stats.why, inline: true
+                            value: stats.why, inline: true
                         }, {
                             name: "Times lizard used",
-                            value: client.stats.lizard, inline: true
-                        },
+                            value: stats.lizard, inline: true
+                       },
 
                         {
                             name: "Links",

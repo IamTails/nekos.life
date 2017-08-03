@@ -1,12 +1,12 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = (client, message) => {
-    client.stats.lewd++;
-    client.db(client.stats);
-
+exports.run = async (client, message) => {
+    let stats = await client.getStats();
+    stats.lewd++;
+    client.saveStats(stats);
     if (message.channel.nsfw) {
-        client.snekfetch.get('https://nekos.life/api/lewd/neko')
+        await client.snekfetch.get('https://nekos.life/api/lewd/neko')
             .then(r => message.channel.send({
                 embed: {
                     color: client.getRandomColor(),
@@ -21,7 +21,7 @@ exports.run = (client, message) => {
             }).catch(e => console.warn('wew tf happened here ' + e)));
 
     } else {
-        message.channel.send({
+       await message.channel.send({
             embed: {
                 color: client.getRandomColor(),
                 author: {

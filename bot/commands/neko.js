@@ -1,10 +1,11 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = (client, message) => {
-    client.stats.neko++;
-    client.db(client.stats);
-    client.snekfetch.get('https://nekos.life/api/neko')
+exports.run = async (client, message) => {
+    let stats = await client.getStats();
+    stats.neko++;
+    client.saveStats(stats);
+    await client.snekfetch.get('https://nekos.life/api/neko')
         .then(r => message.channel.send({
             embed: {
                 color: client.getRandomColor(),

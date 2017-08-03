@@ -16,25 +16,41 @@ module.exports = (client) => {
 
     client.owners = client.config.owners;
 
-    client.stats = JSON.parse(fs.readFileSync("./stats.json", "utf8"));
+    client.getStats = async () => await client.r.db('neko').table('stats').get("f43c8828-fbdd-4fd4-87b7-d7719c537620").run(client.connection, function (err, result) {
+        if (err) throw err;
+        return result;
 
-    client.db = (x) => fs.writeFile("./stats.json", JSON.stringify(x), (err) => {
-        if (err) console.error(err)
     });
+
+    client.saveStats = (val) => {
+        stats = val;
+        client.r.db("neko").table('stats').insert(stats,{conflict: "update"}).run(client.connection, function (err, result) {
+            if (err) throw err;
+        });
+    };
+
 
     client.gprefix = async (id) => {
         let infos = await client.getGuild(id);
         return infos.prefix
-   };
+    };
 
     client.nekoChannel = async (id) => {
         let infos = await client.getGuild(id);
-        if (infos !== null) {return infos.nekochannel}
+        if (infos !== null) {
+            return infos.nekochannel
+        }
 
     };
 
-    client.getGuild = (id) => client.r.db('neko').table('guilds').get(id).
-    run(client.connection, function(err, result) {
+    client.getGuild = (id) => client.r.db('neko').table('guilds').get(id).run(client.connection, function (err, result) {
+        if (err) throw err;
+        return result;
+
+    });
+
+
+    client.getUser = (id) => client.r.db('neko').table('users').get(id).run(client.connection, function (err, result) {
         if (err) throw err;
         return result;
 
@@ -81,7 +97,7 @@ module.exports = (client) => {
         return text;
     };
 
-    client.r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
+    client.r.connect({host: 'localhost', port: 28015}, function (err, conn) {
         if (err) throw err;
         client.connection = conn;
     });

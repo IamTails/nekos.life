@@ -1,9 +1,10 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = (client, message) => {
-    client.stats.help++;
-    client.db(client.stats);
+exports.run = async(client, message) => {
+    let stats = await client.getStats();
+    stats.help++;
+    client.saveStats(stats);
     message.channel.send({
         embed: {
             color: client.getRandomColor(),
@@ -43,7 +44,7 @@ exports.run = (client, message) => {
                     value: "bot and support guild links -.o"
                 }, {
                     name: "Times help used since",
-                    value: client.stats.help, inline: true
+                    value: stats.help, inline: true
                 }
             ],
 
