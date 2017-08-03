@@ -1,8 +1,9 @@
 const fs = require("fs");
-const r = require('rethinkdb');
+
 
 module.exports = (client) => {
 
+    client.r = require('rethinkdb');
 
     client.connection = null;
 
@@ -18,6 +19,19 @@ module.exports = (client) => {
 
     client.db = (x) => fs.writeFile("./stats.json", JSON.stringify(x), (err) => {
         if (err) console.error(err)
+    });
+
+    client.gprefix = async (id) => {
+        let infos = await client.getGuild(id);
+        return infos.prefix
+   };
+
+
+    client.getGuild = (id) => client.r.db('neko').table('guilds').get(id).
+    run(client.connection, function(err, result) {
+        if (err) throw err;
+        return result;
+
     });
 
     client.getRandomColor = () => {
@@ -61,7 +75,7 @@ module.exports = (client) => {
         return text;
     };
 
-    r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
+    client.r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
         if (err) throw err;
         client.connection = conn;
     });

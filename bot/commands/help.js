@@ -31,16 +31,16 @@ exports.run = (client, message) => {
                     value: "Give someone a kiss O.O"
                 }, {
                     name: "**~**why",
-                    value: "Asks why"
+                    value: "Asks why :?"
                 }, {
                     name: "**~**lizard",
-                    value: "Posts a random lizard from [nekos.life](https://nekos.life) \\o/."
+                    value: "Posts a random lizard from [nekos.life api](https://nekos.life) /o\\"
                 }, {
                     name: "**~**stats",
                     value: "Shows the stats ^^"
                 }, {
                     name: "**~**invite",
-                    value: "bot and support guild links."
+                    value: "bot and support guild links -.o"
                 }, {
                     name: "Times help used since",
                     value: client.stats.help, inline: true

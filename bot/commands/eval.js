@@ -1,11 +1,11 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = (client, message, args) => {
+exports.run = async (client, message, args) => {
     if (!client.owners.includes(message.author.id)) return;
     try {
         const code = args.join(" ");
-        let evaled = eval(code);
+        let evaled = await eval(code);
 
         if (typeof evaled !== "string")
             evaled = require("util").inspect(evaled);
