@@ -13,7 +13,7 @@ exports.run = async (client, message) => {
         guild.msgcnt++;
         console.log(guild.msgcnt);
         client.saveGuild(guild);
-        if (guild.msgcnt===5){ client.awaitReply(message,"neko?"); guild.msgcnt = 0; client.saveGuild(guild);}
+        if (guild.msgcnt===35){ client.awaitReply(message); guild.msgcnt = 0; client.saveGuild(guild);}
     }
 //no guild? lets add it
    if (await client.getGuild(message.guild.id) === null)
