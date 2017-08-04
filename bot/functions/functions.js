@@ -79,23 +79,6 @@ module.exports = (client) => {
 
         return color;
     };
-    client.awaitReply = async (msg, question, limit = 60000) => {
-        const filter = m => m.author.id = msg.author.id;
-        await msg.channel.send(question);
-        try {
-            const collected = await msg.channel.awaitMessages(filter, {max: 1, time: limit, errors: ['time']});
-            return collected.first().content;
-        } catch (e) {
-            return false;
-        }
-    };
-    client.answer = (msg, contents, options = {}) => {
-        options.delay = (options.delay || 2000);
-        if (msg.flags.includes("delme")) options.deleteAfter = true;
-        options.deleteAfter = (options.deleteAfter || false);
-        msg.edit(contents);
-        if (options.deleteAfter) msg.delete({timeout: options.delay});
-    };
     client.clean = (text) => {
         if (typeof text !== 'string')
             text = require('util').inspect(text, {depth: 0});
@@ -106,7 +89,26 @@ module.exports = (client) => {
             .replace(client.config.token, "wew No");
         return text;
     };
-
+//catch a neko//todo #probly bad logic someone pls fix k tnx
+    client.awaitReply = async (msg, question, limit = 60000) => {
+        freeNeko = await console.log(question);//msg.channel.send(neko embed here);
+        const filter = m=>m.channel.id = msg.channel.id & m.content === ">catch" ;
+        try {
+            const collected = await msg.channel.awaitMessages(filter,{max: 1, time: limit, errors: ['time']});
+            if (collected.first().content === ">catch"){console.log("True");console.log(collected.first().author.id);
+                freeNeko.delete();
+                msg.channel.fetchMessages({
+                    limit: 100
+                })
+                    .then(messages => {
+                        let msg_array = messages.array();
+                        msg_array = msg_array.filter(m => m.content === ">catch");
+                        msg_array.length = 50;
+                        msg_array.map(m => m.delete().catch(console.error));
+                    });}
+        } catch (e) {
+            return false;
+        }};
 //fuck you crashes
     process.on('uncaughtException', err => {
         let errorMsg = err.stack.replace(new RegExp(`${__dirname}\/`, 'g'), './');

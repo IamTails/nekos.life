@@ -1,14 +1,18 @@
 /**
  * Created by Tom on 7/30/2017.
- */
+ */let cnt = 0;
 exports.run = async (client, message) => {
 //bot?
     if (message.author.bot) return;
 //dm?
     if (message.channel.type !== "text") return message.reply("you can only play with me in a Guild, nya~");
 //have a neko^^
+//todo wew this is fucked
     if (await client.nekoChannel(message.guild.id).catch() !== null && await client.nekoChannel(message.guild.id) === message.channel.id) {
-    }//todo catch a neko stuff
+        cnt++;
+        console.log(cnt);
+        if (cnt===5){ client.awaitReply(message,"neko?"); cnt = 0}
+    }
 //no guild? lets add it
     if (await client.getGuild(message.guild.id) === null)
         return client.r.db("neko").table('guilds').insert({

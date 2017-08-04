@@ -39,7 +39,10 @@ exports.run = async(client, message) => {
                 }, {
                     name: "**~**stats",
                     value: "Shows the stats ^^"
-                }, {
+                },  {
+                    name: "**~**stats commands",
+                    value: "Shows the command stats ^-"
+                },{
                     name: "**~**invite",
                     value: "bot and support guild links -.o"
                 }, {
