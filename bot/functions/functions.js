@@ -95,26 +95,40 @@ module.exports = (client) => {
             .replace(client.config.token, "wew No");
         return text;
     };
-//catch a neko//todo #probly bad logic someone pls fix k tnx
-    client.awaitReply = async (msg, neko2send, limit = 60000) => {
-        freeNeko = msg.channel.send(neko2send);
-        const filter = m=>m.channel.id = msg.channel.id & m.content === ">catch" ;
-        try {
-            const collected = await msg.channel.awaitMessages(filter,{max: 1, time: limit, errors: ['time']});
-            if (collected.first().content === ">catch"){console.log("True");console.log(collected.first().author.id);
-                freeNeko.delete();
-               msg.channel.fetchMessages({
-                    limit: 50
-                })
-                    .then(messages => {
-                        let msg_array = messages.array();
-                        msg_array = msg_array.filter(m => m.content === ">catch");
-                        msg_array.length = 50;
-                        msg_array.map(m => m.delete().catch(console.error));
-                    });}
-        } catch (e) {
-            return false;
-        }};
+//catch a neko//todo deleat all >catchs
+    client.awaitReply = async (msg,limit = 60000) => {
+        const filter = m => m.channel.id === msg.channel.id & m.content === ">catch" ;
+        await client.snekfetch.get('https://nekos.life/api/neko')
+            .then(r => msg.channel.send({
+                embed: {
+                    color: client.getRandomColor(),
+                   description:"o.O a wild neko has appeared\nUse >catch to catch it before it gets away \\o//",
+                    image: {
+                        url: r.body.neko
+                    }
+                }
+            }).catch(e => console.warn('wew tf happened here ' + e)))
+            .then(freeNeko => {
+                freeNeko.channel.awaitMessages(filter, {max: 1, time: limit, errors: ['time']})
+                    .then(async messages => {
+                        messages.first().channel.send('Neko Caught!');
+
+                        messages.first().channel.send(messages.first().author.username + ' Has Caught a neko \\o/');
+                        let user = await client.getUser(messages.first().author.id);
+                        user.nekos++;
+                        user.nekosall++;
+                        client.saveUser(user);
+                        freeNeko.delete().catch();
+                        messages.first().delete().catch()
+                    })
+                    .catch(timeout => {
+                        freeNeko.delete().catch();
+                        freeNeko.channel.send('Time up! The Neko escaped!');
+
+
+                    })
+            })
+    };
 //fuck you crashes
     process.on('uncaughtException', err => {
         let errorMsg = err.stack.replace(new RegExp(`${__dirname}\/`, 'g'), './');

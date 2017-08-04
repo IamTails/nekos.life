@@ -7,11 +7,10 @@ exports.run = async (client, message) => {
 //dm?
     if (message.channel.type !== "text") return message.reply("you can only play with me in a Guild, nya~");
 //have a neko^^
-//todo wew this is fucked
+//todo add random time
     if (await client.nekoChannel(message.guild.id).catch() !== null && await client.nekoChannel(message.guild.id) === message.channel.id) {
         let guild = await client.getGuild(message.guild.id);
         guild.msgcnt++;
-        console.log(guild.msgcnt);
         client.saveGuild(guild);
         if (guild.msgcnt===35){ client.awaitReply(message); guild.msgcnt = 0; client.saveGuild(guild);}
     }
