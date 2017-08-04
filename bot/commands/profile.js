@@ -1,6 +1,7 @@
 /**
  * Created by Tom on 7/29/2017.
  */
+//todo add a way to see aother users profile on tag
 exports.run = async(client, message) => {
     let user = await client.getUser(message.author.id);
     message.channel.send({

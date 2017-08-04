@@ -52,6 +52,12 @@ module.exports = (client) => {
         return result;
 
     });
+    client.saveGuild = (val) => {
+        guild = val;
+        client.r.db("neko").table('guilds').insert(guild,{conflict: "update"}).run(client.connection, function (err, result) {
+            if (err) throw err;
+        });
+    };
     client.getUser = (id) => client.r.db('neko').table('users').get(id).run(client.connection, function (err, result) {
         if (err) throw err;
         return result;
@@ -90,15 +96,15 @@ module.exports = (client) => {
         return text;
     };
 //catch a neko//todo #probly bad logic someone pls fix k tnx
-    client.awaitReply = async (msg, question, limit = 60000) => {
-        freeNeko = await console.log(question);//msg.channel.send(neko embed here);
+    client.awaitReply = async (msg, neko2send, limit = 60000) => {
+        freeNeko = msg.channel.send(neko2send);
         const filter = m=>m.channel.id = msg.channel.id & m.content === ">catch" ;
         try {
             const collected = await msg.channel.awaitMessages(filter,{max: 1, time: limit, errors: ['time']});
             if (collected.first().content === ">catch"){console.log("True");console.log(collected.first().author.id);
                 freeNeko.delete();
-                msg.channel.fetchMessages({
-                    limit: 100
+               msg.channel.fetchMessages({
+                    limit: 50
                 })
                     .then(messages => {
                         let msg_array = messages.array();

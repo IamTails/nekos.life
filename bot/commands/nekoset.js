@@ -1,6 +1,7 @@
 /**
  * Created by Tom on 8/2/2017.
  */
+//todo perms check & way to disable
 exports.run = async (client, message, args) => {
     if (!client.owners.includes(message.author.id)) return;
 

@@ -1,6 +1,6 @@
 /**
  * Created by Tom on 7/30/2017.
- */let cnt = 0;
+ */
 exports.run = async (client, message) => {
 //bot?
     if (message.author.bot) return;
@@ -9,17 +9,20 @@ exports.run = async (client, message) => {
 //have a neko^^
 //todo wew this is fucked
     if (await client.nekoChannel(message.guild.id).catch() !== null && await client.nekoChannel(message.guild.id) === message.channel.id) {
-        cnt++;
-        console.log(cnt);
-        if (cnt===5){ client.awaitReply(message,"neko?"); cnt = 0}
+        let guild = await client.getGuild(message.guild.id);
+        guild.msgcnt++;
+        console.log(guild.msgcnt);
+        client.saveGuild(guild);
+        if (guild.msgcnt===5){ client.awaitReply(message,"neko?"); guild.msgcnt = 0; client.saveGuild(guild);}
     }
 //no guild? lets add it
-    if (await client.getGuild(message.guild.id) === null)
+   if (await client.getGuild(message.guild.id) === null)
         return client.r.db("neko").table('guilds').insert({
             "id": message.guild.id,
             "prefix": client.prefix,
-            "nekochannel": null
-        }, {conflict: "replace"}).run(client.connection, function (err, result) {
+            "nekochannel": null,
+            "msgcnt":0
+        }, {conflict: "update"}).run(client.connection, function (err, result) {
             if (err) throw err;
         });
 //no user? lets add

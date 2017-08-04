@@ -61,4 +61,6 @@ exports.run = (client) => {
 
     }).catch(e => console.warn('wew tf happened here ' + e));
     console.log(`Ready to serve on ${client.guilds.size} servers, for ${client.users.size} users.`);
+
+
 };

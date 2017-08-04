@@ -5,6 +5,7 @@ exports.run = async(client, message) => {
     let stats = await client.getStats();
     stats.help++;
     client.saveStats(stats);
+    //todo cleaner help
     message.channel.send({
         embed: {
             color: client.getRandomColor(),

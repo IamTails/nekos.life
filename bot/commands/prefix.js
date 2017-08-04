@@ -2,6 +2,7 @@
  * Created by Tom on 8/2/2017.
  */
 exports.run = async (client, message, args) => {
+    //todo manage_server perms check
     if (!client.owners.includes(message.author.id)) return;
     if (args[0] === 'set') {
         console.log(args[1]);
