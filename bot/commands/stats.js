@@ -1,23 +1,23 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = async(client, message,args) => {
+exports.run = async(bot, message,args) => {
     const moment = require('moment');
     const Discord = require('discord.js');
     require('moment-duration-format');
-    let stats = await client.getStats();
+    let stats = await bot.getStats();
     stats.stats++;
     if (args[0] === 'commands') {
-        client.saveStats(stats);
-        await client.snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
-            .set('Authorization', client.config.dblkey)
+        bot.saveStats(stats);
+        await bot.snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
+            .set('Authorization', bot.config.dblkey)
             .then(rsp => {
                 message.channel.send({
                     embed: {
-                        color: client.getRandomColor(),
+                        color: bot.getRandomColor(),
                         author: {
-                            name: "Command stats for " + client.user.username,
-                            icon_url: client.user.avatarURL
+                            name: "Command stats for " + bot.user.username,
+                            icon_url: bot.user.avatarURL
                         },
                         fields: [
                             {
@@ -68,38 +68,38 @@ exports.run = async(client, message,args) => {
                 })
             })
             .catch(e => console.warn('wew tf happened here ' + e)).catch(e => console.warn('wew tf happened here ' + e));
-    }else {client.saveStats(stats);
-        await client.snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
-            .set('Authorization', client.config.dblkey)
+    }else {bot.saveStats(stats);
+        await bot.snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
+            .set('Authorization', bot.config.dblkey)
             .then(rsp => {
                 message.channel.send({
                     embed: {
-                        color: client.getRandomColor(),
+                        color: bot.getRandomColor(),
                         author: {
-                            name: "Stats for " + client.user.username,
-                            icon_url: client.user.avatarURL
+                            name: "Stats for " + bot.user.username,
+                            icon_url: bot.user.avatarURL
                         },
                         fields: [
                             {
                                 name: "Guilds",
-                                value: client.guilds.size
+                                value: bot.guilds.size
                                 , inline: true
                             },
                             {
                                 name: "Users",
-                                value: client.users.filter(g => !g.bot).size, inline: true
+                                value: bot.users.filter(g => !g.bot).size, inline: true
                             },
                             {
                                 name: "Bots",
-                                value: client.users.filter(g => g.bot).size, inline: true
+                                value: bot.users.filter(g => g.bot).size, inline: true
                             }, {
                                 name: "Ping",
-                                value: client.ping.toFixed(0) + 'ms', inline: true
+                                value: bot.ping.toFixed(0) + 'ms', inline: true
                             },
                             {
                                 name: "Uptime"
                                 ,
-                                value: moment.duration(client.uptime).format('d[ days], h[ hours], m[ minutes, and ]s[ seconds]'),
+                                value: moment.duration(bot.uptime).format('d[ days], h[ hours], m[ minutes, and ]s[ seconds]'),
                                 inline: true
                             }, {
                                 name: "Upvotes",
@@ -111,12 +111,12 @@ exports.run = async(client, message,args) => {
                             },
                             {
                                 name: "Version info",
-                                value: "**Node**: " + process.version + " **D.js**: " + Discord.version + " **Neko**: " + client.config.nekover,
+                                value: "**Node**: " + process.version + " **D.js**: " + Discord.version + " **Neko**: " + bot.config.nekover,
                                 inline: true
 
                             }, {
                                 name: "Bringing you Nekos since"
-                                , value: moment(client.user.createdAt).format('LLLL'), inline: true
+                                , value: moment(bot.user.createdAt).format('LLLL'), inline: true
                             },
 
                             {

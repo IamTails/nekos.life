@@ -1,16 +1,16 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = async(client, message,args) => {
+exports.run = async(bot, message,args) => {
     if (args < 1) return message.reply(" :x: O.o you wanna pat yourself??");
-    let stats = await client.getStats();
+    let stats = await bot.getStats();
     stats.pat++;
-    client.saveStats(stats);
-    await client.snekfetch.get('https://nekos.life/api/pat')
+    bot.saveStats(stats);
+    await bot.snekfetch.get('https://nekos.life/api/pat')
         .set('Key', 'dnZ4fFJbjtch56pNbfrZeSRfgWqdPDgf')
         .then(r => message.channel.send(`${args} You got a pat from ${message.author.username} :heart:`,{
             embed: {
-                color: client.getRandomColor(),
+                color: bot.getRandomColor(),
                 image: {
                     url: r.body.url
                 }

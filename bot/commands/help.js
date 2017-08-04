@@ -1,17 +1,17 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = async(client, message) => {
-    let stats = await client.getStats();
+exports.run = async(bot, message) => {
+    let stats = await bot.getStats();
     stats.help++;
-    client.saveStats(stats);
+    bot.saveStats(stats);
     //todo cleaner help
     message.channel.send({
         embed: {
-            color: client.getRandomColor(),
+            color: bot.getRandomColor(),
             author: {
-                name: "Command Help for " + client.user.username,
-                icon_url: client.user.avatarURL
+                name: "Command Help for " + bot.user.username,
+                icon_url: bot.user.avatarURL
             }, fields: [{
                 name: "**~**nya",
                 value: "pong!"

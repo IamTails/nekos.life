@@ -1,10 +1,10 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = (client, message) => {
+exports.run = (bot, message) => {
     message.channel.send({
         embed: {
-            color: client.getRandomColor(),
+            color: bot.getRandomColor(),
             fields: [{
                 name: "Support Guild",
                 value: "[Support Guild click here](https://discord.gg/Edw4FhF)"

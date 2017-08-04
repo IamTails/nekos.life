@@ -1,14 +1,14 @@
-exports.run = async (client, message) => {
-    let stats = await client.getStats();
+exports.run = async (bot, message) => {
+    let stats = await bot.getStats();
     stats.why++;
-    client.saveStats(stats);
-    await client.snekfetch.get('https://nekos.life/api/why')
+    bot.saveStats(stats);
+    await bot.snekfetch.get('https://nekos.life/api/why')
         .then(r => message.channel.send({
             embed: {
-                color: client.getRandomColor(),
+                color: bot.getRandomColor(),
                 author: {
                     name: "Why? \\o/",
-                    icon_url: client.user.avatarURL
+                    icon_url: bot.user.avatarURL
                 },fields: [
                     {
                         name: message.author.username + "Asks ",

@@ -1,8 +1,8 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = async (client, message, args) => {
-    if (!client.owners.includes(message.author.id)) return;
+exports.run = async (bot, message, args) => {
+    if (!bot.owners.includes(message.author.id)) return;
     try {
         const code = args.join(" ");
         let evaled = await eval(code);
@@ -10,35 +10,35 @@ exports.run = async (client, message, args) => {
         if (typeof evaled !== "string")
             evaled = require("util").inspect(evaled);
 
-        client.snekfetch.post(`http://feed-the-wump.us/documents`)
-            .send(client.clean(evaled))
+        bot.snekfetch.post(`http://feed-the-wump.us/documents`)
+            .send(bot.clean(evaled))
             .then(hb => {
                 message.channel.send({
                     embed: {
-                        color: client.getRandomColor(),
+                        color: bot.getRandomColor(),
                         author: {
                             name: "eval",
-                            icon_url: client.user.avatarURL
+                            icon_url: bot.user.avatarURL
                         },
                         fields: [
                             {
                                 name: "Result",
-                                value: client.clean(evaled),
+                                value: bot.clean(evaled),
                             }, {
                                 name: "wumpus",
                                 value: "https://feed-the-wump.us/" + hb.body.key
                             }]
                     }
                 }).catch(err => {
-                    client.snekfetch.post(`http://feed-the-wump.us/documents`)
-                        .send(client.clean(evaled))
+                    bot.snekfetch.post(`http://feed-the-wump.us/documents`)
+                        .send(bot.clean(evaled))
                         .then(hb => {
                             message.channel.send({
                                 embed: {
-                                    color: client.getRandomColor(),
+                                    color: bot.getRandomColor(),
                                     author: {
                                         name: "eval",
-                                        icon_url: client.user.avatarURL
+                                        icon_url: bot.user.avatarURL
                                     },
                                     fields: [
                                         {
@@ -51,15 +51,15 @@ exports.run = async (client, message, args) => {
                 })
             })
     } catch (err) {
-        client.snekfetch.post(`http://feed-the-wump.us/documents`)
-            .send(client.clean(err))
+        bot.snekfetch.post(`http://feed-the-wump.us/documents`)
+            .send(bot.clean(err))
             .then(hb => {
                 message.channel.send({
                     embed: {
-                        color: client.getRandomColor(),
+                        color: bot.getRandomColor(),
                         author: {
                             name: "eval",
-                            icon_url: client.user.avatarURL
+                            icon_url: bot.user.avatarURL
                         },
                         fields: [{
                             name: "wumpus",

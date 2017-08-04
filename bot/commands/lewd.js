@@ -1,18 +1,18 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = async (client, message) => {
-    let stats = await client.getStats();
+exports.run = async (bot, message) => {
+    let stats = await bot.getStats();
     stats.lewd++;
-    client.saveStats(stats);
+    bot.saveStats(stats);
     if (message.channel.nsfw) {
-        await client.snekfetch.get('https://nekos.life/api/lewd/neko')
+        await bot.snekfetch.get('https://nekos.life/api/lewd/neko')
             .then(r => message.channel.send({
                 embed: {
-                    color: client.getRandomColor(),
+                    color: bot.getRandomColor(),
                     author: {
                         name: "Lewd Nekos >.<",
-                        icon_url: client.user.avatarURL
+                        icon_url: bot.user.avatarURL
                     },
                     image: {
                         url: r.body.neko
@@ -23,10 +23,10 @@ exports.run = async (client, message) => {
     } else {
        await message.channel.send({
             embed: {
-                color: client.getRandomColor(),
+                color: bot.getRandomColor(),
                 author: {
-                    name: client.user.username,
-                    icon_url: client.user.avatarURL
+                    name: bot.user.username,
+                    icon_url: bot.user.avatarURL
                 },
                 description: "o.O lewd nekos are shy they can only be found in discord NSFW channels. mew!"
             }

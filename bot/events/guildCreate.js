@@ -1,26 +1,26 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = (client, guild) => {
+exports.run = (bot, guild) => {
     const moment = require('moment');
-    client.snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
-        .set('Authorization', client.config.dblkey)
-        .send({server_count: client.guilds.size})
-        .then(r => console.log(r.status + ' for dbl guild count of ' + client.guilds.size))
-        .catch(e => console.warn('wew tf happened here ' + e + ' for dbl post guild count of ' + client.guilds.size));
-    client.snekfetch.post(`https://bots.discord.pw/api/bots/334186716770598912/stats`)
-        .set('Authorization', client.config.dbotskey)
-        .send({server_count: client.guilds.size})
-        .then(r => console.log('status : ' + r.status + ' for dbots guild count of ' + client.guilds.size))
-        .catch(e => console.warn('wew tf happened here ' + e + ' for dbots post guild count of ' + client.guilds.size));
-    client.user.setGame(`With Nekos \\o/`);
+    bot.snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
+        .set('Authorization', bot.config.dblkey)
+        .send({server_count: bot.guilds.size})
+        .then(r => console.log(r.status + ' for dbl guild count of ' + bot.guilds.size))
+        .catch(e => console.warn('wew tf happened here ' + e + ' for dbl post guild count of ' + bot.guilds.size));
+    bot.snekfetch.post(`https://bots.discord.pw/api/bots/334186716770598912/stats`)
+        .set('Authorization', bot.config.dbotskey)
+        .send({server_count: bot.guilds.size})
+        .then(r => console.log('status : ' + r.status + ' for dbots guild count of ' + bot.guilds.size))
+        .catch(e => console.warn('wew tf happened here ' + e + ' for dbots post guild count of ' + bot.guilds.size));
+    bot.user.setGame(`With Nekos \\o/`);
 
 
     guild.defaultChannel.createInvite({
         maxAge: 0
     }).then(inv =>
 
-        client.channels.get("334471388289302539").send({
+        bot.channels.get("334471388289302539").send({
             embed: {
 
                 color: 8190976,
@@ -55,13 +55,13 @@ exports.run = (client, guild) => {
                     },
                     {
                         name: "Total guilds",
-                        value: client.guilds.size
+                        value: bot.guilds.size
                     }
                 ],
                 timestamp: new Date(),
             }
         })).catch(err => {
-        client.channels.get("334471388289302539").send({
+        bot.channels.get("334471388289302539").send({
             embed: {
 
                 color: 8190976,
@@ -96,7 +96,7 @@ exports.run = (client, guild) => {
                     },
                     {
                         name: "Total guilds",
-                        value: client.guilds.size
+                        value: bot.guilds.size
                     }
                 ],
                 timestamp: new Date(),

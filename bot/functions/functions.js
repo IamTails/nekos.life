@@ -1,81 +1,79 @@
 
-module.exports = (client) => {
+module.exports = (bot) => {
 //common emotes
-    client.nekov = async () => {
-        let nekoe = await client.emojis.get("342750455513874442");
+    bot.nekov = async () => {
+        let nekoe = await bot.emojis.get("342750455513874442");
         return nekoe.toString()
     };
-    client.nekoc = async () => {
-        let nekoe = await client.emojis.get("342750457472483328");
+    bot.nekoc = async () => {
+        let nekoe = await bot.emojis.get("342750457472483328");
         return nekoe.toString()
     };
-    client.nekot = async () => {
-        let nekoe = await client.emojis.get("342728872883912705");
+    bot.nekot = async () => {
+        let nekoe = await bot.emojis.get("342728872883912705");
         return nekoe.toString()
     };
-    client.nekoa = async () => {
-        let nekoe = await client.emojis.get("342750480507731968");
+    bot.nekoa = async () => {
+        let nekoe = await bot.emojis.get("342750480507731968");
         return nekoe.toString()
     };
-
 //rethonk
-    client.r = require('rethinkdb');
-    client.connection = null;
-    client.r.connect({host: 'localhost', port: 28015}, function (err, conn) {
+    bot.r = require('rethinkdb');
+    bot.connection = null;
+    bot.r.connect({host: 'localhost', port: 28015}, function (err, conn) {
         if (err) throw err;
-        client.connection = conn;
+        bot.connection = conn;
     });
-    client.getStats = async () => await client.r.db('neko').table('stats').get("f43c8828-fbdd-4fd4-87b7-d7719c537620").run(client.connection, function (err, result) {
+    bot.getStats = async () => await bot.r.db('neko').table('stats').get("f43c8828-fbdd-4fd4-87b7-d7719c537620").run(bot.connection, function (err, result) {
         if (err) throw err;
         return result;
 
     });
-    client.saveStats = (val) => {
+    bot.saveStats = (val) => {
         stats = val;
-        client.r.db("neko").table('stats').insert(stats,{conflict: "update"}).run(client.connection, function (err, result) {
+        bot.r.db("neko").table('stats').insert(stats,{conflict: "update"}).run(bot.connection, function (err, result) {
             if (err) throw err;
         });
     };
-    client.gprefix = async (id) => {
-        let infos = await client.getGuild(id);
+    bot.gprefix = async (id) => {
+        let infos = await bot.getGuild(id);
         return infos.prefix
     };
-    client.nekoChannel = async (id) => {
-        let infos = await client.getGuild(id);
+    bot.nekoChannel = async (id) => {
+        let infos = await bot.getGuild(id);
         if (infos !== null) {
             return infos.nekochannel
         }
 
     };
-    client.getGuild = (id) => client.r.db('neko').table('guilds').get(id).run(client.connection, function (err, result) {
+    bot.getGuild = (id) => bot.r.db('neko').table('guilds').get(id).run(bot.connection, function (err, result) {
         if (err) throw err;
         return result;
 
     });
-    client.saveGuild = (val) => {
+    bot.saveGuild = (val) => {
         guild = val;
-        client.r.db("neko").table('guilds').insert(guild,{conflict: "update"}).run(client.connection, function (err, result) {
+        bot.r.db("neko").table('guilds').insert(guild,{conflict: "update"}).run(bot.connection, function (err, result) {
             if (err) throw err;
         });
     };
-    client.getUser = (id) => client.r.db('neko').table('users').get(id).run(client.connection, function (err, result) {
+    bot.getUser = (id) => bot.r.db('neko').table('users').get(id).run(bot.connection, function (err, result) {
         if (err) throw err;
         return result;
 
     });
-    client.saveUser = (val) => {
+    bot.saveUser = (val) => {
         user = val;
-        client.r.db("neko").table('users').insert(user,{conflict: "update"}).run(client.connection, function (err, result) {
+        bot.r.db("neko").table('users').insert(user,{conflict: "update"}).run(bot.connection, function (err, result) {
             if (err) throw err;
         });
     };
-
 //commons
-    client.snekfetch = require('snekfetch');
-    client.config = require("../config.json");
-    client.prefix = client.config.prefix;
-    client.owners = client.config.owners;
-    client.getRandomColor = () => {
+    bot.snekfetch = require('snekfetch');
+    bot.config = require("../config.json");
+    bot.prefix = bot.config.prefix;
+    bot.owners = bot.config.owners;
+    bot.getRandomColor = () => {
 
         let letters = '0123456789';
         let color = '';
@@ -85,23 +83,23 @@ module.exports = (client) => {
 
         return color;
     };
-    client.clean = (text) => {
+    bot.clean = (text) => {
         if (typeof text !== 'string')
             text = require('util').inspect(text, {depth: 0});
         text = text
             .replace(/`/g, "`" + String.fromCharCode(8203))
             .replace(/@/g, "@" + String.fromCharCode(8203))
-            .replace(client.token, "wew No")
-            .replace(client.config.token, "wew No");
+            .replace(bot.token, "wew No")
+            .replace(bot.config.token, "wew No");
         return text;
     };
-//catch a neko//todo deleat all >catchs
-    client.awaitReply = async (msg,limit = 60000) => {
+//catch a neko//todo del all >catch
+    bot.awaitReply = async (msg,limit = 60000) => {
         const filter = m => m.channel.id === msg.channel.id & m.content === ">catch" ;
-        await client.snekfetch.get('https://nekos.life/api/neko')
+        await bot.snekfetch.get('https://nekos.life/api/neko')
             .then(r => msg.channel.send({
                 embed: {
-                    color: client.getRandomColor(),
+                    color: bot.getRandomColor(),
                    description:"o.O a wild neko has appeared\nUse >catch to catch it before it gets away \\o//",
                     image: {
                         url: r.body.neko
@@ -114,10 +112,10 @@ module.exports = (client) => {
                         messages.first().channel.send('Neko Caught!');
 
                         messages.first().channel.send(messages.first().author.username + ' Has Caught a neko \\o/');
-                        let user = await client.getUser(messages.first().author.id);
+                        let user = await bot.getUser(messages.first().author.id);
                         user.nekos++;
                         user.nekosall++;
-                        client.saveUser(user);
+                        bot.saveUser(user);
                         freeNeko.delete().catch();
                         messages.first().delete().catch()
                     })

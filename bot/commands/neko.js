@@ -1,17 +1,17 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = async (client, message) => {
-    let stats = await client.getStats();
+exports.run = async (bot, message) => {
+    let stats = await bot.getStats();
     stats.neko++;
-    client.saveStats(stats);
-    await client.snekfetch.get('https://nekos.life/api/neko')
+    bot.saveStats(stats);
+    await bot.snekfetch.get('https://nekos.life/api/neko')
         .then(r => message.channel.send({
             embed: {
-                color: client.getRandomColor(),
+                color: bot.getRandomColor(),
                 author: {
                     name: "Nekos \\o/",
-                    icon_url: client.user.avatarURL
+                    icon_url: bot.user.avatarURL
                 },
                 image: {
                     url: r.body.neko
