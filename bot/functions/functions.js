@@ -57,9 +57,27 @@ module.exports = (bot) => {
             if (err) throw err;
         });
     };
+    bot.getTopExp = async () => await bot.r.db('neko').table('users').orderBy(bot.r.desc("exp")).limit(10).run(bot.connection, function(err, cursor) {
+        if (err) throw err;
+        cursor.toArray(function(err, result) {
+            if (err) throw err;
+
+            console.log(result);
+            return result
+        });
+    });
+    bot.getTopNekos = async () => await bot.r.db('neko').table('users').orderBy(bot.r.desc("nekos")).limit(10).run(bot.connection, function(err, cursor) {
+        if (err) throw err;
+        cursor.toArray(function(err, result) {
+            if (err) throw err;
+
+            console.log(result);
+            return result
+        });
+    });
     bot.getUser = (id) => bot.r.db('neko').table('users').get(id).run(bot.connection, function (err, result) {
         if (err) throw err;
-        return result;
+        return result
 
     });
     bot.saveUser = (val) => {
