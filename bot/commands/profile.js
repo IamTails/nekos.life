@@ -27,6 +27,9 @@ exports.run = async(bot, message) => {
                 },{
                     name: "Current nekos "+await bot.nekov(),
                     value: user.nekos
+                },{
+                    name: "Date registered",
+                    value: user.regdate
                 }
             ],
             timestamp: new Date(),

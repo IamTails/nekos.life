@@ -25,18 +25,23 @@ exports.run = async (bot, message) => {
             if (err) throw err;
         });
 //no user? lets add
+    const moment = require('moment');
     if (await bot.getUser(message.author.id) === null) return bot.r.db("neko").table('users').insert({
-        "id": message.author.id,
         "nekosall": 0,
         "nekos": 0,
         "exp": 0,
-        "level": 0
-    }, {conflict: "update"}).run(bot.connection, function (err, result) {
+        "level": 0,
+        "id": message.author.id,
+        "name":message.author.tag,
+        "regdate":moment().format('MMMM Do YYYY, h:mm:ss a')
+    }, {conflict: "update"}).run(bot.connection,{arrayLimit:10000000}, function (err, result) {
         if (err) throw err;
+        console.log("add user")
     });
 //levels!gay right??
     let user = await bot.getUser(message.author.id);
     user.exp++;
+    user.name = message.author.tag;
     let curLevel = Math.floor(0.1 * Math.sqrt(user.exp));
     if (curLevel > user.level) {
         user.level = curLevel;

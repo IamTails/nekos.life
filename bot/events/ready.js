@@ -4,7 +4,7 @@
 exports.run = (bot) => {
     const Discord = require('discord.js');
     const moment = require('moment');
-
+    console.log(moment().format('MMMM Do YYYY, h:mm:ss a'));
     bot.snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
         .set('Authorization', bot.config.dblkey)
         .send({server_count: bot.guilds.size})

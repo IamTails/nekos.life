@@ -1,4 +1,3 @@
-
 module.exports = (bot) => {
 //common emotes
     bot.nekov = async () => {
@@ -31,7 +30,7 @@ module.exports = (bot) => {
     });
     bot.saveStats = (val) => {
         stats = val;
-        bot.r.db("neko").table('stats').insert(stats,{conflict: "update"}).run(bot.connection, function (err, result) {
+        bot.r.db("neko").table('stats').insert(stats, {conflict: "update"}).run(bot.connection, function (err, result) {
             if (err) throw err;
         });
     };
@@ -46,34 +45,30 @@ module.exports = (bot) => {
         }
 
     };
-    bot.getGuild = (id) => bot.r.db('neko').table('guilds').get(id).run(bot.connection, function (err, result) {
-        if (err) throw err;
-        return result;
-
+    bot.getGuild = (id) => bot.r.db('neko').table('guilds').get(id).run(bot.connection).then((result) => {
+        return result
+    }).error((err) => {
+        console.log(err)
     });
     bot.saveGuild = (val) => {
         guild = val;
-        bot.r.db("neko").table('guilds').insert(guild,{conflict: "update"}).run(bot.connection, function (err, result) {
+        bot.r.db("neko").table('guilds').insert(guild, {conflict: "update"}).run(bot.connection, function (err, result) {
             if (err) throw err;
         });
     };
-    bot.getTopExp = async () => await bot.r.db('neko').table('users').orderBy(bot.r.desc("exp")).limit(10).run(bot.connection, function(err, cursor) {
-        if (err) throw err;
-        cursor.toArray(function(err, result) {
-            if (err) throw err;
+    bot.getTopExp = async () => await bot.r.db('neko').table('users').orderBy({index: bot.r.desc("exp")}).limit(5).run(bot.connection, {arrayLimit: 10000000}).then((result) => {
+        return result.toArray()
+    }).then((result) => {
+        return result
+    }).error((err) => {
 
-            console.log(result);
-            return result
-        });
     });
-    bot.getTopNekos = async () => await bot.r.db('neko').table('users').orderBy(bot.r.desc("nekos")).limit(10).run(bot.connection, function(err, cursor) {
-        if (err) throw err;
-        cursor.toArray(function(err, result) {
-            if (err) throw err;
-
-            console.log(result);
-            return result
-        });
+    bot.getTopNekos = async () => await bot.r.db('neko').table('users').orderBy({index: bot.r.desc("nekos")}).limit(5).run(bot.connection, {arrayLimit: 10000000}).then((result) => {
+        return result.toArray()
+    }).then((result) => {
+        return result
+    }).error((err) => {
+        console.log(err)
     });
     bot.getUser = (id) => bot.r.db('neko').table('users').get(id).run(bot.connection, function (err, result) {
         if (err) throw err;
@@ -82,7 +77,7 @@ module.exports = (bot) => {
     });
     bot.saveUser = (val) => {
         user = val;
-        bot.r.db("neko").table('users').insert(user,{conflict: "update"}).run(bot.connection, function (err, result) {
+        bot.r.db("neko").table('users').insert(user, {conflict: "update"}).run(bot.connection, function (err, result) {
             if (err) throw err;
         });
     };
@@ -112,13 +107,13 @@ module.exports = (bot) => {
         return text;
     };
 //catch a neko//todo del all >catch
-    bot.awaitReply = async (msg,limit = 60000) => {
-        const filter = m => m.channel.id === msg.channel.id & m.content === ">catch" ;
+    bot.awaitReply = async (msg, limit = 60000) => {
+        const filter = m => m.channel.id === msg.channel.id & m.content === ">catch";
         await bot.snekfetch.get('https://nekos.life/api/neko')
             .then(r => msg.channel.send({
                 embed: {
                     color: bot.getRandomColor(),
-                   description:"o.O a wild neko has appeared\nUse >catch to catch it before it gets away \\o//",
+                    description: "o.O a wild neko has appeared\nUse >catch to catch it before it gets away \\o//",
                     image: {
                         url: r.body.neko
                     }
@@ -134,16 +129,16 @@ module.exports = (bot) => {
                         user.nekos++;
                         user.nekosall++;
                         bot.saveUser(user);
-                        freeNeko.delete().catch();
-                        messages.first().delete().catch()
+                        freeNeko.delete().catch(e => console.warn('wew tf happened here no delete perms'));
+                        messages.first().delete().catch(e => console.warn('wew tf happened here no delete perms'));
                     })
                     .catch(timeout => {
-                        freeNeko.delete().catch();
+                        freeNeko.delete().catch(e => console.warn('wew tf happened here no delete perms'));
                         freeNeko.channel.send('Time up! The Neko escaped!');
 
 
                     })
-            })
+            }).catch(e => console.warn('wew tf happened here no delete perms'));
     };
 //fuck you crashes
     process.on('uncaughtException', err => {
