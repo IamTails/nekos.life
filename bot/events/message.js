@@ -8,13 +8,13 @@ exports.run = async (bot, message) => {
     if (message.channel.type !== "text") return message.reply("you can only play with me in a Guild, nya~");
 //have a neko^^
 //todo add random time
-    if (await bot.nekoChannel(message.guild.id).catch() !== null && await bot.nekoChannel(message.guild.id) === message.channel.id) {
+   if (await bot.nekoChannel(message.guild.id).catch() !== null && await bot.nekoChannel(message.guild.id) === message.channel.id) {
         let guild = await bot.getGuild(message.guild.id);
         guild.msgcnt++;
         bot.saveGuild(guild);
         if (guild.msgcnt===35){ bot.awaitReply(message); guild.msgcnt = 0; bot.saveGuild(guild);}
     }
-//no guild? lets add it
+ //no guild? lets add it
    if (await bot.getGuild(message.guild.id) === null)
         return bot.r.db("neko").table('guilds').insert({
             "id": message.guild.id,
@@ -36,7 +36,7 @@ exports.run = async (bot, message) => {
         "regdate":moment().format('MMMM Do YYYY, h:mm:ss a')
     }, {conflict: "update"}).run(bot.connection,{arrayLimit:10000000}, function (err, result) {
         if (err) throw err;
-        console.log("add user")
+        console.log(`Added user ${message.author.tag}`)
     });
 //levels!gay right??
     let user = await bot.getUser(message.author.id);

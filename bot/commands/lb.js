@@ -2,7 +2,6 @@
  * Created by Tom on 8/2/2017.
  */
 exports.run = async (bot, message, args) => {
-
     usern = await bot.getTopNekos();
     usere = await bot.getTopExp();
     nc = await bot.nekoc();

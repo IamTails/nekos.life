@@ -106,14 +106,30 @@ module.exports = (bot) => {
             .replace(bot.config.token, "wew No");
         return text;
     };
-//catch a neko//todo del all >catch
+    bot.updateLists = () => {
+        bot.snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
+            .set('Authorization', bot.config.dblkey)
+            .send({server_count: bot.guilds.size})
+            .then(r => console.log(r.status + ' for dbl guild count of ' + bot.guilds.size))
+            .catch(e => console.warn('wew tf happened here ' + e + ' for dbl post guild count of ' + bot.guilds.size));
+        bot.snekfetch.post(`https://bots.discord.pw/api/bots/334186716770598912/stats`)
+            .set('Authorization', bot.config.dbotskey)
+            .send({server_count: bot.guilds.size})
+            .then(r => console.log('status : ' + r.status + ' for dbots guild count of ' + bot.guilds.size))
+            .catch(e => console.warn('wew tf happened here ' + e + ' for dbots post guild count of ' + bot.guilds.size));};
+    bot.upVotes = async () =>{await bot.snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
+        .set('Authorization', bot.config.dblkey)
+        .then(rsp =>
+            bot.votes = JSON.parse(rsp.text).length )};
+    bot.votes = "";
+//catch a neko//
     bot.awaitReply = async (msg, limit = 60000) => {
         const filter = m => m.channel.id === msg.channel.id & m.content === ">catch";
         await bot.snekfetch.get('https://nekos.life/api/neko')
             .then(r => msg.channel.send({
                 embed: {
                     color: bot.getRandomColor(),
-                    description: "o.O a wild neko has appeared\nUse >catch to catch it before it gets away \\o//",
+                    description: "o.O a wild neko has appeared\nUse >catch to catch it before it gets away \\o/",
                     image: {
                         url: r.body.neko
                     }
@@ -122,9 +138,8 @@ module.exports = (bot) => {
             .then(freeNeko => {
                 freeNeko.channel.awaitMessages(filter, {max: 1, time: limit, errors: ['time']})
                     .then(async messages => {
-                        messages.first().channel.send('Neko Caught!');
-
-                        messages.first().channel.send(messages.first().author.username + ' Has Caught a neko \\o/');
+                        messages.first().channel.send('Neko Caught!').then(m=>m.delete(6000)).catch(e => console.warn('wew tf happened here no delete perms'));
+                        messages.first().channel.send(messages.first().author.username + ' Has Caught a neko \\o/').then(m=>m.delete(6000));
                         let user = await bot.getUser(messages.first().author.id);
                         user.nekos++;
                         user.nekosall++;
@@ -134,11 +149,13 @@ module.exports = (bot) => {
                     })
                     .catch(timeout => {
                         freeNeko.delete().catch(e => console.warn('wew tf happened here no delete perms'));
-                        freeNeko.channel.send('Time up! The Neko escaped!');
-
-
+                        freeNeko.channel.send('Time up! The Neko escaped!').then(m=>m.delete(6000)).catch(e => console.warn('wew tf happened here no delete perms'));
                     })
             }).catch(e => console.warn('wew tf happened here no delete perms'));
+        const fetched = await msg.channel.fetchMessages({limit: 50});
+       dme = fetched.filter(m => m.content === ">catch");
+        msg.channel.bulkDelete(dme)
+            .catch(error => console.log(`Couldn't delete messages because of: ${error}`));
     };
 //fuck you crashes
     process.on('uncaughtException', err => {

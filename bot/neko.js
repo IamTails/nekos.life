@@ -6,7 +6,12 @@ const bot = new Discord.Client();
 const fs = require("fs");
 require("./functions/functions.js")(bot);
 fs.readdir("./events/", (err, files) => {
-    console.log(`Adding ${files.length} events.`);
+    console.log(`Neko
+  \\    /\\
+   )  ( \')
+   (  /  )
+    \\(__)|
+Added ${files.length} events.`);
     if (err) return console.error(err);
     files.forEach(file => {
         let eventFunction = require(`./events/${file}`);

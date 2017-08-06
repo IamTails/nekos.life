@@ -9,9 +9,6 @@ exports.run = async(bot, message,args) => {
     stats.stats++;
     if (args[0] === 'commands') {
         bot.saveStats(stats);
-        await bot.snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
-            .set('Authorization', bot.config.dblkey)
-            .then(rsp => {
                 message.channel.send({
                     embed: {
                         color: bot.getRandomColor(),
@@ -65,13 +62,8 @@ exports.run = async(bot, message,args) => {
                             text: "Stats requested by " + message.author.username
                         }
                     }
-                })
-            })
-            .catch(e => console.warn('wew tf happened here ' + e)).catch(e => console.warn('wew tf happened here ' + e));
+                }).catch(e => console.warn('wew tf happened here ' + e)).catch(e => console.warn('wew tf happened here ' + e));
     }else {bot.saveStats(stats);
-        await bot.snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
-            .set('Authorization', bot.config.dblkey)
-            .then(rsp => {
                 message.channel.send({
                     embed: {
                         color: bot.getRandomColor(),
@@ -103,7 +95,7 @@ exports.run = async(bot, message,args) => {
                                 inline: true
                             }, {
                                 name: "Upvotes",
-                                value: rsp.body.length, inline: true
+                                value: bot.votes, inline: true
                             },
                             {
                                 name: "Ram used",
@@ -132,6 +124,5 @@ exports.run = async(bot, message,args) => {
                         }
                     }
                 })
-            })
             .catch(e => console.warn('wew tf happened here ' + e)).catch(e => console.warn('wew tf happened here ' + e));}
     };

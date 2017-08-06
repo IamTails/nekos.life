@@ -6,10 +6,8 @@ exports.run = async (bot, message, args) => {
     try {
         const code = args.join(" ");
         let evaled = await eval(code);
-
         if (typeof evaled !== "string")
             evaled = require("util").inspect(evaled);
-
         bot.snekfetch.post(`http://feed-the-wump.us/documents`)
             .send(bot.clean(evaled))
             .then(hb => {

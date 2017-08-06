@@ -1,21 +1,19 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = (bot) => {
+
+exports.run = async(bot) => {
     const Discord = require('discord.js');
     const moment = require('moment');
-    console.log(moment().format('MMMM Do YYYY, h:mm:ss a'));
-    bot.snekfetch.post(`https://discordbots.org/api/bots/334186716770598912/stats`)
-        .set('Authorization', bot.config.dblkey)
-        .send({server_count: bot.guilds.size})
-        .then(r => console.log(r.status + ' for dbl guild count of ' + bot.guilds.size))
-        .catch(e => console.warn('wew tf happened here ' + e + ' for dbl post guild count of ' + bot.guilds.size));
-    bot.snekfetch.post(`https://bots.discord.pw/api/bots/334186716770598912/stats`)
-        .set('Authorization', bot.config.dbotskey)
-        .send({server_count: bot.guilds.size})
-        .then(r => console.log('status : ' + r.status + ' for dbots guild count of ' + bot.guilds.size))
-        .catch(e => console.warn('wew tf happened here ' + e + ' for dbots post guild count of ' + bot.guilds.size));
-    bot.user.setGame(`With Nekos \\o/`).catch(e => console.warn('wew tf happened here ' + e));
+    console.log("booted on "+moment().format('MMMM Do YYYY, h:mm:ss a'));
+    bot.updateLists();
+    await bot.upVotes();
+    console.log("upvotes "+bot.votes);
+    bot.user.setGame(`~help | Guilds: ${bot.guilds.size} | Users: ${bot.users.filter(g => !g.bot).size}` ).catch(e => console.warn('wew tf happened here ' + e));
+    console.log("Logged in as "+bot.user.tag);
+    console.log("" +
+        "prefix "+bot.prefix);
+    console.log(`Status set to: ~help | Guilds: ${bot.guilds.size} | Users: ${bot.users.filter(g => !g.bot).size}` );
     bot.channels.get("334471388289302539").send({
         embed: {
             color: bot.getRandomColor(),
