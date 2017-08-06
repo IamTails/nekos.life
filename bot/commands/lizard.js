@@ -8,7 +8,7 @@ exports.run = async (bot, message) => {
     await bot.snekfetch.get(`https://discordbots.org/api/bots/334186716770598912/votes?onlyids=1`)
         .set('Authorization', bot.config.dblkey)
         .then(rsp => {
-        if (!rsp.body.includes(message.author.id)) return message.reply(`hmmmm, you must upvote at https://discordbots.org/api/bots/${bot.user.id}`);
+        if (!rsp.body.includes(message.author.id)) return message.reply(`hmmmm, you must upvote at https://discordbots.org/bot/${bot.user.id}`);
     bot.snekfetch.get('https://nekos.life/api/lizard')
     .then(r => message.channel.send({
         embed: {
