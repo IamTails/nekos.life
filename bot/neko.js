@@ -31,13 +31,3 @@ Node:${process.version} D.js: ${Discord.version} Neko: ${bot.config.nekover}`);
     });
 });
 bot.login(bot.config.token).catch(e => console.warn('wew tf happened here ' + e));
-process.on('uncaughtException', err => {
-    let errorMsg = err.stack.replace(new RegExp(`${__dirname}\/`, 'g'), './');
-    console.error("Uncaught Exception: ", errorMsg);
-});
-process.on("unhandledRejection", err => {
-console.error("Uncaught Promise Error: ", err);
-});
-process.on('exit', (code) => {
-    console.log(`exiting with code: ${code}`);
-});

@@ -43,4 +43,34 @@ exports.run = (bot, guild) => {
         }
     });
     console.log(`left ${guild.name}.`);
+    bot.postWebhook(bot.config.glwh,{
+        "embeds": [{
+            "description": "**Left a Guild at ** \n"
+            + require('moment')().format('MMMM Do YYYY, h:mm:ss a'),
+            "color": bot.getRandomColor(),
+            "footer": {
+                "icon_url": bot.user.displayAvatarURL,
+                "text": "Neko webhook"
+            },
+            "author": {
+                "name": bot.user.username,
+                "icon_url": bot.user.displayAvatarURL
+            },
+            "fields": [
+                {
+                    "name": "Owner",
+                    "value": guild.owner.displayName
+                },
+                {
+                    "name": "Users",
+                    "value": guild.memberCount
+                },
+                {
+                    "name": "Guild",
+                    "value": guild.name
+                }
+            ]
+        }
+        ]});
+
 };

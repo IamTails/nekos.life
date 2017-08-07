@@ -167,8 +167,28 @@ module.exports = (bot) => {
     process.on('uncaughtException', err => {
         let errorMsg = err.stack.replace(new RegExp(`${__dirname}\/`, 'g'), './');
         console.error("Uncaught Exception: ", errorMsg);
+        bot.postWebhook(bot.config.elwh,{
+            "embeds": [{
+                "title":"Uncaught Exception",
+                "description": errorMsg
+                + require('moment')().format('MMMM Do YYYY, h:mm:ss a'),
+                "color": bot.getRandomColor(),
+            }]});
+
     });
     process.on("unhandledRejection", err => {
         console.error("Uncaught Promise Error: ", err);
+        bot.postWebhook(bot.config.elwh,{
+            "embeds": [{
+                "title":"Uncaught Promise Error",
+                "description": err
+                + "\n"+require('moment')().format('MMMM Do YYYY, h:mm:ss a'),
+                "color": bot.getRandomColor(),
+            }]});
+
     });
+    process.on('exit', (code) => {
+        console.log(`exiting with code: ${code}`);
+    });
+
 };
