@@ -88,12 +88,7 @@ exports.run = async(bot, message,args) => {
                                 name: "Ping",
                                 value: bot.ping.toFixed(0) + 'ms', inline: true
                             },
-                            {
-                                name: "Uptime"
-                                ,
-                                value: moment.duration(bot.uptime).format('d[ days], h[ hours], m[ minutes, and ]s[ seconds]'),
-                                inline: true
-                            }, {
+                           {
                                 name: "Upvotes",
                                 value: bot.votes, inline: true
                             },
@@ -106,6 +101,11 @@ exports.run = async(bot, message,args) => {
                                 value: "**Node**: " + process.version + " **D.js**: " + Discord.version + " **Neko**: " + bot.config.nekover,
                                 inline: true
 
+                            },  {
+                                name: "Uptime"
+                                ,
+                                value: moment.duration(bot.uptime).format('d[ days], h[ hours], m[ minutes, and ]s[ seconds]'),
+                                inline: true
                             }, {
                                 name: "Bringing you Nekos since"
                                 , value: moment(bot.user.createdAt).format('LLLL'), inline: true

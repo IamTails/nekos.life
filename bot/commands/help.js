@@ -2,59 +2,51 @@
  * Created by Tom on 7/29/2017.
  */
 exports.run = async(bot, message) => {
+    let gp = await bot.gprefix(message.guild.id);
     let stats = await bot.getStats();
     stats.help++;
     bot.saveStats(stats);
-    //todo cleaner help
     message.channel.send({
         embed: {
             color: bot.getRandomColor(),
             author: {
-                name: "Command Help for " + bot.user.username,
+                name: `Command Help for ${bot.user.username}`,
                 icon_url: bot.user.avatarURL
-            }, fields: [{
-                name: "**~**nya",
-                value: "pong!"
-            },
+            }, fields: [
                 {
-                    name: "**~**neko",
-                    value: "Posts a random neko from [nekos.life](https://nekos.life) \\o/."
+                    name: `**Neko Commands**`,
+                    value: `**${gp}nya**: pong!\n**${gp}neko**: Posts a random neko from [nekos.life](https://nekos.life) \\o/.\n`+
+                    `**${gp}lewd**: Posts a random lewd neko from [nekos.life](https://nekos.life) o.o\n`+
+                    `**${gp}release**: Releases one of your nekos for others to catch >.<`
+
                 }, {
-                    name: "**~**lewd",
-                    value: "Posts a random lewd neko from [nekos.life](https://nekos.life) o.o"
+                    name: `**Profile Commands**`,
+                    value: `**${gp}profile**: Shows your profile or a users profile @tag o.-\n**${gp}lb nekos**: Shows the Top neko catchers -^\n` +
+                    `**${gp}lb levels**: Shows the Top leveled users /o\\\n`
+
                 },{
-                    name: "**~**pat",
-                    value: "Give someone a pat O.o"
-                },{
-                    name: "**~**hug",
-                    value: "Give someone a hug o.O"
-                },{
-                    name: "**~**kiss",
-                    value: "Give someone a kiss O.O"
-                }, {
-                    name: "**~**why",
-                    value: "Asks why :?"
-                }, {
-                    name: "**~**lizard",
-                    value: "Posts a random lizard from [nekos.life api](https://nekos.life) /o\\"
-                }, {
-                    name: "**~**stats",
-                    value: "Shows the stats ^^"
+                    name: `Fun Commands`,
+                    value: `**${gp}pat**: Give someone a pat O.o\n` +
+                    `**${gp}hug**: Give someone a hug o.O\n` +
+                    `**${gp}kiss**: Give someone a kiss O.O\n` +
+                    `**${gp}why**: Asks why :?\n` +
+                    `**${gp}lizard**: Posts a random lizard from [nekos.life api](https://nekos.life) /o\\\n`
                 },  {
-                    name: "**~**stats commands",
-                    value: "Shows the command stats ^-"
+                    name: `Bot Commands`,
+                    value:
+                    `**${gp}prefix set**: Sets the guild prefix owo\n` +
+                    `**${gp}stats**: Shows the stats ^^\n` +
+                    `**${gp}stats commands**: Shows the command stats ^-\n` +
+                    `**${gp}invite**: bot and support guild links -.o\n`
                 },{
-                    name: "**~**invite",
-                    value: "bot and support guild links -.o"
-                }, {
-                    name: "Times help used since",
-                    value: stats.help, inline: true
+                    name: `Times help used`,
+                    value: stats.help
                 }
             ],
 
             timestamp: new Date(),
             footer: {
-                text: "Help requested by " + message.author.username
+                text: `Help requested by ${message.author.username}`
             }
         }
     }).catch(e => console.warn('wew tf happened here ' + e))
