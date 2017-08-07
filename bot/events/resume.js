@@ -1,7 +1,7 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = (r) => {
+exports.run = (bot,r) => {
     console.info("resumed "+r);
     bot.postWebhook(bot.config.bwh,{
         "embeds": [{

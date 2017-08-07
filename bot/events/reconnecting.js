@@ -1,7 +1,7 @@
 /**
  * Created by Tom on 7/29/2017.
  */
-exports.run = () => {
+exports.run = (bot) => {
     console.info("Reconnecting");
     bot.postWebhook(bot.config.bwh,{
         "embeds": [{
