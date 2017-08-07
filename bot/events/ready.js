@@ -59,4 +59,17 @@ exports.run = async(bot) => {
 
     }).catch(e => console.warn('wew tf happened here ' + e));
     console.log(`Ready to serve on ${bot.guilds.size} servers, for ${bot.users.size} users.`);
+    bot.postWebhook(bot.config.bwh,{
+        "embeds": [{
+            "description": "**Logged in at ** \n"
+            + require('moment')().format('MMMM Do YYYY, h:mm:ss a'),
+            "color": bot.getRandomColor(),
+            "footer": {
+                "icon_url": bot.user.displayAvatarURL,
+                "text": "Neko webhook"
+            },
+            "author": {
+                "name": bot.user.username,
+                "icon_url": bot.user.displayAvatarURL
+            }}]});
 };

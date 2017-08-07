@@ -157,6 +157,12 @@ module.exports = (bot) => {
         msg.channel.bulkDelete(dme)
             .catch(error => console.log(`Couldn't delete messages because of: ${error}`));
     };
+//webhook
+    bot.postWebhook = async (wh,embed) =>{await
+        bot.snekfetch.post(wh)
+            .send(embed)
+        .then(rsp =>
+            console.log("Posted webhook with status of : "+rsp.status))};
 //fuck you crashes
     process.on('uncaughtException', err => {
         let errorMsg = err.stack.replace(new RegExp(`${__dirname}\/`, 'g'), './');
