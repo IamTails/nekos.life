@@ -4,6 +4,7 @@
 exports.run = async (bot, message) => {
 //bot?
     if (message.author.bot) return;
+    if (message.author.id === "153173425844781056") return;
 //dm?
     if (message.channel.type !== "text") return message.reply("you can only play with me in a Guild, nya~");
 //have a neko^^

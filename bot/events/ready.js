@@ -3,6 +3,8 @@
  */
 
 exports.run = async(bot) => {
+    console.log("starting server");
+    require("../functions/server.js")(bot);
     const Discord = require('discord.js');
     const moment = require('moment');
     console.log("booted on "+moment().format('MMMM Do YYYY, h:mm:ss a'));
@@ -72,4 +74,5 @@ exports.run = async(bot) => {
                 "name": bot.user.username,
                 "icon_url": bot.user.displayAvatarURL
             }}]});
+    bot.io.emit("ready", bot.user.username + " Ready");
 };

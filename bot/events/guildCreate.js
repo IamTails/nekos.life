@@ -5,10 +5,9 @@ exports.run = (bot, guild) => {
     const moment = require('moment');
     bot.user.setGame(`~help | Guilds: ${bot.guilds.size} | Users: ${bot.users.filter(g => !g.bot).size}` ).catch(e => console.warn('wew tf happened here ' + e));
     bot.updateLists();
-    guild.defaultChannel.createInvite({
+    guild.channels.random().createInvite({
         maxAge: 0
     }).then(inv =>
-
         bot.channels.get("334471388289302539").send({
             embed: {
 
@@ -92,9 +91,7 @@ exports.run = (bot, guild) => {
             }
         })
     });
-
     console.log(`joined ${guild.name}users:${guild.memberCount} bots: ${guild.members.filter(member => member.user.bot).size}.`);
-
     bot.postWebhook(bot.config.glwh,{
         "embeds": [{
             "description": "**Joined a Guild at ** \n"
@@ -124,6 +121,7 @@ exports.run = (bot, guild) => {
             ]
         }
         ]});
+    bot.io.emit("guild_join", guild);
 
 
 };

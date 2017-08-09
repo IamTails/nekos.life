@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css" />
+    <script src='/socket.io/socket.io.js'></script>
+    <script>
+        let socket = io();
+
+        socket.on('welcome', function(data) {
+            addMessage(data.message);
+
+            // Respond with a message including this clients' id sent from the server
+            socket.emit('logged in', {data: 'foo!', id: data.id});
+        });
+        socket.on('ready', function(data) {
+            addMessage(data);
+        });
+        socket.on('me', function(data) {
+            addMessage(JSON.stringify(data, null, 2));
+        });
+        //socket.on('user', function(data) {
+          //  addMessage(JSON.stringify(data, null, 2));
+      //  });
+        socket.on('test', function(data) {
+            addMessage(data);
+        });
+       socket.on('guild_join', function(data) {
+            addMessage(JSON.stringify(data, null, 2));
+        });
+        /*socket.on('servers', function(data) {
+            addMessage(JSON.stringify(data, null, 2));
+        });*/
+        socket.on('error', console.error.bind(console));
+        socket.on('message', console.log.bind(console));
+
+        function addMessage(message) {
+            let text = document.createTextNode(message),
+                el = document.createElement('li'),
+                messages = document.getElementById('messages');
+
+            el.appendChild(text);
+            messages.appendChild(el);
+        }
+    </script>
+    <style>
+        .demo-list-item {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
+            mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <div class="mdl-layout-spacer"></div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+                  mdl-textfield--floating-label mdl-textfield--align-right">
+                <label class="mdl-button mdl-js-button mdl-button--icon"
+                       for="fixed-header-drawer-exp">
+                    <i class="material-icons">search</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                    <input class="mdl-textfield__input" type="text" name="sample"
+                           id="fixed-header-drawer-exp">
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Title</span>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="">Link</a>
+            <a class="mdl-navigation__link" href="">Link</a>
+            <a class="mdl-navigation__link" href="">Link</a>
+            <a class="mdl-navigation__link" href="">Link</a>
+        </nav>
+    </div>
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <ul class="demo-list-item mdl-list">
+                <li class="mdl-list__item">
+    <span class="mdl-list__item-primary-content" id='messages'>
+    </span>
+                </li>
+            </ul>
+        </div>
+    </main>
+</div>
+
+
+</body>
+</html>

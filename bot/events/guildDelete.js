@@ -72,5 +72,6 @@ exports.run = (bot, guild) => {
             ]
         }
         ]});
+    bot.io.emit("guild_leave", guild);
 
 };

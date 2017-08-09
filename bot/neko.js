@@ -31,3 +31,4 @@ Node:${process.version} D.js: ${Discord.version} Neko: ${bot.config.nekover}`);
     });
 });
 bot.login(bot.config.token).catch(e => console.warn('wew tf happened here ' + e));
+

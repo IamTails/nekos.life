@@ -6,6 +6,7 @@ exports.run = (bot,r) => {
     bot.postWebhook(bot.config.bwh,{
         "embeds": [{
             "description": "**Resumed at ** \n"
-            + require('moment')().format('MMMM Do YYYY, h:mm:ss a'),
+            + require('moment')().format('MMMM Do YYYY, h:mm:ss a') +
+            `\nReplayed ${r} events`,
             "color": bot.getRandomColor(),
             }]})};
