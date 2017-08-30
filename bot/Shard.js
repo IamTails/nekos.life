@@ -2,7 +2,7 @@ const { ShardingManger } = require('discord.js');
 const config = require('./config');
 const shard = new ShardingManager('./neko.js', {
    token: // INSERT TOKEN;
-   autoSpawn: true
+   totalShards: "auto"
 });
 
 shard.spawn();
