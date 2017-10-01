@@ -1,5 +1,5 @@
 /*
- Created by ℭrystaℒ on 7/10/2017.
+ Created by ℭrystaℒ on 7/10/2017 <3
  */
 const Discord = require('discord.js');
 const bot = new Discord.Client();
