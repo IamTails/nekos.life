@@ -7,6 +7,7 @@ exports.run = async(bot) => {
     require("../functions/server.js")(bot);
     const Discord = require('discord.js');
     const moment = require('moment');
+    await bot.systemstuff.start();
     console.log("booted on "+moment().format('MMMM Do YYYY, h:mm:ss a'));
     bot.updateLists();
     await bot.upVotes();
